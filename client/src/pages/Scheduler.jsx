@@ -12,11 +12,18 @@ import {
   Search,
   Clock,
   Phone,
+  Cloud,
+  CloudRain,
+  Sun,
+  CloudSnow,
+  CloudDrizzle,
 } from "lucide-react";
+import toast from "react-hot-toast";
 import { Button } from "../components/ui/Button";
 import { Select } from "../components/ui/Select";
 import { Input } from "../components/ui/Input";
 import { Avatar, AvatarFallback } from "../components/ui/Avatar";
+import { schedulerApi, weatherApi } from "../lib/api";
 
 export default function Scheduler() {
   const [selectedSite, setSelectedSite] = useState("");
@@ -25,17 +32,73 @@ export default function Scheduler() {
   const [optionsOpen, setOptionsOpen] = useState(false);
   const optionsRef = useRef(null);
 
-  // Sample employee data
-  const employees = [
-    { id: 1, name: "Aksashbir Singh", initials: "AS", hours: "0.00", phone: "0466-624-302" },
-    { id: 2, name: "Anjali Bhasin", initials: "AB", hours: "0.00", phone: "0403-062-351" },
-    { id: 3, name: "Ansh Arora", initials: "AA", hours: "0.00", phone: "0478-246-018" },
-    { id: 4, name: "Archana Gordhanbhai P...", initials: "AG", hours: "0.00", phone: "423370308" },
-    { id: 5, name: "Armaan Singh", initials: "AS", hours: "0.00", phone: "0466-520-403" },
-    { id: 6, name: "Arman singh", initials: "AS", hours: "0.00", phone: "0432-658-094" },
-    { id: 7, name: "Arushi Bajaj", initials: "AB", hours: "0.00", phone: "435182515" },
-    { id: 8, name: "Dhruvi Desai", initials: "DD", hours: "0.00", phone: "0451-082-646" },
-  ];
+  // API state
+  const [sites, setSites] = useState([]);
+  const [employees, setEmployees] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [weatherData, setWeatherData] = useState([]);
+
+  // Fetch sites on mount
+  useEffect(() => {
+    const fetchSites = async () => {
+      try {
+        const response = await schedulerApi.getSites();
+        setSites(response.data.data);
+      } catch (err) {
+        toast.error('Failed to load sites');
+      }
+    };
+    fetchSites();
+  }, []);
+
+  // Fetch employees when site is selected
+  useEffect(() => {
+    if (!selectedSite) {
+      setEmployees([]);
+      setWeatherData([]);
+      return;
+    }
+
+    const fetchEmployees = async () => {
+      try {
+        setLoading(true);
+        const response = await schedulerApi.getSiteEmployees(selectedSite);
+        setEmployees(response.data.data);
+      } catch (err) {
+        toast.error('Failed to load employees');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEmployees();
+  }, [selectedSite]);
+
+  // Fetch weather when site is selected
+  useEffect(() => {
+    if (!selectedSite) {
+      setWeatherData([]);
+      return;
+    }
+
+    const fetchWeather = async () => {
+      try {
+        // Find the selected site to get coordinates
+        const site = sites.find(s => s.id === parseInt(selectedSite));
+        if (!site || !site.latitude || !site.longitude) {
+          return;
+        }
+
+        const response = await weatherApi.getForecast(site.latitude, site.longitude);
+        setWeatherData(response.data.data.forecast || []);
+      } catch (err) {
+        console.error('Failed to load weather data:', err);
+        // Don't show error toast for weather - it's not critical
+      }
+    };
+
+    fetchWeather();
+  }, [selectedSite, sites]);
 
   // Close options dropdown when clicking outside
   useEffect(() => {
@@ -110,6 +173,32 @@ export default function Scheduler() {
     return "4 Weeks";
   };
 
+  // Get weather icon based on weather condition
+  const getWeatherIcon = (weather) => {
+    if (!weather) return null;
+    const condition = weather.toLowerCase();
+    if (condition.includes('rain')) return <CloudRain className="h-4 w-4" />;
+    if (condition.includes('cloud')) return <Cloud className="h-4 w-4" />;
+    if (condition.includes('snow')) return <CloudSnow className="h-4 w-4" />;
+    if (condition.includes('drizzle')) return <CloudDrizzle className="h-4 w-4" />;
+    if (condition.includes('clear') || condition.includes('sun')) return <Sun className="h-4 w-4" />;
+    return <Cloud className="h-4 w-4" />;
+  };
+
+  // Get weather for a specific date
+  const getWeatherForDate = (dateIndex) => {
+    if (!weatherData || weatherData.length === 0) return null;
+
+    // Calculate the actual date for this column
+    const today = new Date(2025, 11, 22);
+    const targetDate = new Date(today);
+    targetDate.setDate(targetDate.getDate() + dateIndex);
+    const targetDateStr = targetDate.toISOString().split('T')[0];
+
+    // Find weather data for this date
+    return weatherData.find(w => w.date === targetDateStr);
+  };
+
   return (
     <div className="flex flex-col h-screen bg-white">
       {/* Top Toolbar */}
@@ -121,8 +210,11 @@ export default function Scheduler() {
             className="w-48"
           >
             <option value="">Select Site...</option>
-            <option value="site1">Site 1</option>
-            <option value="site2">Site 2</option>
+            {sites.map((site) => (
+              <option key={site.id} value={site.id}>
+                {site.shortName} - {site.siteLocationName}
+              </option>
+            ))}
           </Select>
 
           <Button
@@ -375,41 +467,55 @@ export default function Scheduler() {
           <div className="min-w-max">
             {/* Date Headers */}
             <div className="flex border-b border-gray-200 sticky top-0 bg-white z-10">
-              {dateColumns.map((date, index) => (
-                <div
-                  key={index}
-                  className="w-[140px] px-2 py-3 text-center border-r border-gray-200"
-                >
-                  {date === "TODAY" ? (
-                    <div className="text-sm font-bold text-gray-900">TODAY</div>
-                  ) : (
-                    <>
-                      <div className="text-xs font-medium text-gray-700">
-                        {date.split(", ")[0]}
+              {dateColumns.map((date, index) => {
+                const weather = getWeatherForDate(index);
+                return (
+                  <div
+                    key={index}
+                    className="w-[140px] px-2 py-3 text-center border-r border-gray-200"
+                  >
+                    {date === "TODAY" ? (
+                      <div className="text-sm font-bold text-gray-900">TODAY</div>
+                    ) : (
+                      <>
+                        <div className="text-xs font-medium text-gray-700">
+                          {date.split(", ")[0]}
+                        </div>
+                        <div className="text-xs text-gray-500">
+                          {date.split(", ")[1]}
+                        </div>
+                      </>
+                    )}
+
+                    {/* Weather Information */}
+                    {weather && (
+                      <div className="mt-1 flex items-center justify-center gap-1 text-gray-600">
+                        {getWeatherIcon(weather.weather)}
+                        <span className="text-xs font-medium">
+                          {Math.round(weather.temp)}°C
+                        </span>
                       </div>
-                      <div className="text-xs text-gray-500">
-                        {date.split(", ")[1]}
+                    )}
+
+                    {/* Special day labels */}
+                    {date.includes("25, Dec") && (
+                      <div className="mt-1 px-2 py-0.5 bg-blue-900 text-white text-xs rounded">
+                        Christmas Day
                       </div>
-                    </>
-                  )}
-                  {/* Special day labels */}
-                  {date.includes("25, Dec") && (
-                    <div className="mt-1 px-2 py-0.5 bg-blue-900 text-white text-xs rounded">
-                      Christmas Day
-                    </div>
-                  )}
-                  {date.includes("26, Dec") && (
-                    <div className="mt-1 px-2 py-0.5 bg-blue-900 text-white text-xs rounded">
-                      Boxing Day
-                    </div>
-                  )}
-                  {date.includes("1, Jan") && (
-                    <div className="mt-1 px-2 py-0.5 bg-gray-800 text-white text-xs rounded">
-                      New Year
-                    </div>
-                  )}
-                </div>
-              ))}
+                    )}
+                    {date.includes("26, Dec") && (
+                      <div className="mt-1 px-2 py-0.5 bg-blue-900 text-white text-xs rounded">
+                        Boxing Day
+                      </div>
+                    )}
+                    {date.includes("1, Jan") && (
+                      <div className="mt-1 px-2 py-0.5 bg-gray-800 text-white text-xs rounded">
+                        New Year
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
 
             {/* Location View - Only show Open Shift row */}

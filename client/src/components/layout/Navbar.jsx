@@ -130,13 +130,6 @@ export default function Navbar() {
                                   <Icon className="w-4 h-4" />
                                   {item.label}
                                 </div>
-                                <NavLink
-                                  to={item.to}
-                                  onClick={() => setMenuState(item.submenuKey, false)}
-                                  className="block px-4 py-2 text-sm hover:bg-gray-100 transition-colors"
-                                >
-                                  {item.label}
-                                </NavLink>
                                 {submenus[item.submenuKey].map((subItem, index) => (
                                   <NavLink
                                     key={index}

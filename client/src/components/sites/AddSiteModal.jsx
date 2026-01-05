@@ -14,11 +14,13 @@ import {
   EyeOff,
   ChevronUp,
 } from "lucide-react";
+import toast from "react-hot-toast";
 import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
 import { Select } from "../ui/Select";
+import { siteApi } from "../../lib/api";
 
-export default function AddSiteModal({ onClose }) {
+export default function AddSiteModal({ onClose, onSuccess }) {
   const [activeTab, setActiveTab] = useState("address");
   const [geoFenceRadius, setGeoFenceRadius] = useState(0.3);
   const [accessCodeExpanded, setAccessCodeExpanded] = useState(true);
@@ -27,6 +29,10 @@ export default function AddSiteModal({ onClose }) {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const modalRef = useRef(null);
+
+  // API state
+  const [submitting, setSubmitting] = useState(false);
+  const [errors, setErrors] = useState({});
 
   const [accessCodeData, setAccessCodeData] = useState({
     codeName: "",
@@ -62,6 +68,48 @@ export default function AddSiteModal({ onClose }) {
 
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleSave = async () => {
+    try {
+      setSubmitting(true);
+      setErrors({});
+
+      // Build request payload from formData
+      const payload = {
+        ...formData,
+        // Convert string values to appropriate types
+        flatBillingRate: formData.flatBillingRate ? parseFloat(formData.flatBillingRate) : null,
+        latitude: formData.latitude ? parseFloat(formData.latitude) : null,
+        longitude: formData.longitude ? parseFloat(formData.longitude) : null,
+        geoFenceRadius: geoFenceRadius,
+        defaultShiftDuration: formData.defaultShiftDuration ? parseInt(formData.defaultShiftDuration) : null,
+        status: formData.status === "Active" ? "ACTIVE" : "INACTIVE"
+      };
+
+      const response = await siteApi.create(payload);
+
+      // If access code data exists, add it
+      if (accessCodeData.codeName && accessCodeData.accessCode) {
+        await siteApi.addAccessCode(response.data.data.id, {
+          ...accessCodeData,
+          visibleOnMobile: accessCodeData.visibleOnMobile === "yes",
+          whenRostered: accessCodeData.whenRostered === "yes",
+          afterClockingIn: accessCodeData.afterClockingIn === "yes"
+        });
+      }
+
+      onClose();
+      if (onSuccess) onSuccess();
+    } catch (err) {
+      const apiErrors = err.response?.data?.errors;
+      if (apiErrors) {
+        setErrors(apiErrors);
+      }
+      toast.error(err.response?.data?.message || 'Failed to create site');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleMouseDown = (e) => {
@@ -125,9 +173,13 @@ export default function AddSiteModal({ onClose }) {
             <Button variant="outline" size="icon" className="hidden md:flex">
               <RotateCw className="w-4 h-4" />
             </Button>
-            <Button className="bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm px-2 sm:px-4 py-1.5 sm:py-2">
+            <Button
+              onClick={handleSave}
+              disabled={submitting}
+              className="bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm px-2 sm:px-4 py-1.5 sm:py-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
               <Save className="w-3 h-3 sm:w-4 sm:h-4 sm:mr-2" />
-              <span className="hidden sm:inline">Save</span>
+              <span className="hidden sm:inline">{submitting ? 'Saving...' : 'Save'}</span>
             </Button>
             <button className="hidden lg:flex px-3 py-2 border border-gray-300 rounded hover:bg-gray-50 transition-colors items-center gap-2 text-sm">
               Actions

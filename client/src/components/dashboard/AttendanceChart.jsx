@@ -189,7 +189,7 @@ export default function AttendanceChart() {
                   style={{ height: `${item.value}%` }}
                 />
               </div>
-              <div className="text-xs text-gray-600 mt-2 text-center max-w-[80px] break-words leading-tight">
+              <div className="text-xs text-gray-600 mt-2 text-center w-full px-1 truncate" title={item.label}>
                 {item.label}
               </div>
             </div>
@@ -197,13 +197,13 @@ export default function AttendanceChart() {
         </div>
 
         {/* Summary Circles */}
-        <div className="grid grid-cols-4 md:grid-cols-8 gap-4 mt-6">
+        <div className="grid grid-cols-4 md:grid-cols-8 gap-4 mt-6 items-start">
           {attendanceData.map((item, index) => (
             <div key={index} className="flex flex-col items-center">
-              <div className="w-16 h-16 rounded-full border-4 border-gray-200 flex items-center justify-center">
+              <div className="w-16 h-16 rounded-full border-4 border-gray-200 flex items-center justify-center flex-shrink-0">
                 <span className="text-lg font-bold text-gray-900">{item.value}</span>
               </div>
-              <div className="text-xs text-gray-600 mt-2 text-center max-w-[80px] break-words leading-tight">
+              <div className="text-xs text-gray-600 mt-2 text-center w-full px-1 truncate h-4" title={item.label}>
                 {item.label}
               </div>
             </div>

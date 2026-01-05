@@ -1,14 +1,17 @@
 import { useState, useRef } from "react";
 import { X, Plus, Trash2 } from "lucide-react";
+import toast from "react-hot-toast";
 import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
 import { Select } from "../ui/Select";
+import { siteApi } from "../../lib/api";
 
-export default function AddMultipleSitesModal({ onClose }) {
+export default function AddMultipleSitesModal({ onClose, onSuccess }) {
   const [isDragging, setIsDragging] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const modalRef = useRef(null);
+  const [submitting, setSubmitting] = useState(false);
 
   const [sites, setSites] = useState([
     { id: 1, siteName: "", shortName: "", address: "", client: "", checked: false },
@@ -68,6 +71,40 @@ export default function AddMultipleSitesModal({ onClose }) {
         site.id === id ? { ...site, checked: !site.checked } : site
       )
     );
+  };
+
+  const handleSave = async () => {
+    try {
+      setSubmitting(true);
+
+      // Filter out empty sites (sites with at least siteName and shortName filled)
+      const validSites = sites.filter(s =>
+        s.siteName.trim() && s.shortName.trim()
+      );
+
+      if (validSites.length === 0) {
+        toast.error('Please fill in at least one site with Name and Short Name');
+        return;
+      }
+
+      // Map to API format
+      const payload = validSites.map(site => ({
+        siteLocationName: site.siteName,
+        shortName: site.shortName,
+        address: site.address,
+        client: site.client || 'No Client',
+        status: 'ACTIVE'
+      }));
+
+      const response = await siteApi.bulkCreate(payload);
+
+      onClose();
+      if (onSuccess) onSuccess();
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed to create sites');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -201,11 +238,15 @@ export default function AddMultipleSitesModal({ onClose }) {
 
         {/* Footer */}
         <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-200 bg-gray-50">
-          <Button variant="outline" onClick={onClose}>
+          <Button variant="outline" onClick={onClose} disabled={submitting}>
             Cancel
           </Button>
-          <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-            Save
+          <Button
+            onClick={handleSave}
+            disabled={submitting}
+            className="bg-blue-600 hover:bg-blue-700 text-white disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {submitting ? 'Saving...' : 'Save'}
           </Button>
         </div>
       </div>

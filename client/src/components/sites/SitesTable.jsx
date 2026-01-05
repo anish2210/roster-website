@@ -1,19 +1,30 @@
 import { ArrowUpDown } from "lucide-react";
-import { useMemo } from "react";
-import sites from "../../data/sites";
 import SiteRow from "./SiteRow";
 
-export default function SitesTable({ showInactive }) {
-  // Filter sites based on inactive toggle
-  const filteredSites = useMemo(() => {
-    if (showInactive) {
-      return sites; // Show all sites
-    }
-    return sites.filter((site) => site.status !== "Inactive"); // Show only active sites
-  }, [showInactive]);
+export default function SitesTable({ sites, loading, showInactive }) {
+  // If loading, show spinner
+  if (loading) {
+    return (
+      <div className="bg-white rounded-lg sm:rounded-xl shadow-sm p-8 text-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+        <p className="mt-4 text-gray-600">Loading sites...</p>
+      </div>
+    );
+  }
 
-  const totalSites = sites.length;
-  const displayedSites = filteredSites.length;
+  // If no sites, show empty state
+  if (!sites || sites.length === 0) {
+    return (
+      <div className="bg-white rounded-lg sm:rounded-xl shadow-sm p-8 text-center">
+        <p className="text-gray-600">No sites found</p>
+        <p className="text-sm text-gray-500 mt-2">
+          Click "Add New" to create your first site
+        </p>
+      </div>
+    );
+  }
+
+  const displayedSites = sites.length;
 
   return (
     <div className="bg-white rounded-lg sm:rounded-xl shadow-sm">
@@ -48,7 +59,7 @@ export default function SitesTable({ showInactive }) {
           </thead>
 
           <tbody className="divide-y divide-gray-200">
-            {filteredSites.map((site) => (
+            {sites.map((site) => (
               <SiteRow key={site.id} site={site} />
             ))}
           </tbody>
@@ -59,7 +70,6 @@ export default function SitesTable({ showInactive }) {
       <div className="px-3 sm:px-4 py-3 bg-gray-50 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-3">
         <div className="text-xs sm:text-sm text-gray-600">
           Showing 1 to {displayedSites} of {displayedSites} entries
-          {displayedSites !== totalSites && ` (filtered from ${totalSites} total entries)`}
         </div>
         <div className="flex items-center gap-2">
           <button className="px-2 sm:px-3 py-1 text-xs sm:text-sm border border-gray-300 rounded hover:bg-gray-100 transition-colors">

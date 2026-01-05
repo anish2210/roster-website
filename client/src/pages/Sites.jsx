@@ -1,9 +1,11 @@
 import { useState, useRef, useEffect } from "react";
 import { MapPin, Plus, ChevronDown, Settings, Maximize, RotateCw } from "lucide-react";
+import toast from "react-hot-toast";
 import SitesTable from "../components/sites/SitesTable";
 import SiteFilters from "../components/sites/SiteFilters";
 import AddSiteModal from "../components/sites/AddSiteModal";
 import AddMultipleSitesModal from "../components/sites/AddMultipleSitesModal";
+import { siteApi } from "../lib/api";
 
 export default function Sites() {
   const [showInactive, setShowInactive] = useState(false);
@@ -11,6 +13,48 @@ export default function Sites() {
   const [showAddSiteModal, setShowAddSiteModal] = useState(false);
   const [showMultipleSitesModal, setShowMultipleSitesModal] = useState(false);
   const addMenuRef = useRef(null);
+
+  // API state
+  const [sites, setSites] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [pagination, setPagination] = useState({
+    page: 1,
+    limit: 25,
+    total: 0,
+    totalPages: 0
+  });
+
+  // Fetch sites function
+  const fetchSites = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await siteApi.getAll({
+        status: showInactive ? undefined : 'ACTIVE',
+        page: pagination.page,
+        limit: pagination.limit
+      });
+      setSites(response.data.data.sites);
+      setPagination(response.data.data.pagination);
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to fetch sites');
+      toast.error('Failed to load sites');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fetch sites on mount and when filters change
+  useEffect(() => {
+    fetchSites();
+  }, [showInactive, pagination.page, pagination.limit]);
+
+  // Handle refresh button
+  const handleRefresh = () => {
+    fetchSites();
+    toast.success('Sites refreshed');
+  };
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -40,7 +84,11 @@ export default function Sites() {
             <button className="p-1.5 sm:p-2 hover:bg-blue-700 rounded transition-colors" title="Expand">
               <Maximize className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
-            <button className="p-1.5 sm:p-2 hover:bg-blue-700 rounded transition-colors" title="Refresh">
+            <button
+              onClick={handleRefresh}
+              className="p-1.5 sm:p-2 hover:bg-blue-700 rounded transition-colors"
+              title="Refresh"
+            >
               <RotateCw className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
           </div>
@@ -117,17 +165,33 @@ export default function Sites() {
         </div>
 
         {/* Table */}
-        <SitesTable showInactive={showInactive} />
+        <SitesTable
+          sites={sites}
+          loading={loading}
+          showInactive={showInactive}
+        />
       </div>
 
       {/* Add Site Modal */}
       {showAddSiteModal && (
-        <AddSiteModal onClose={() => setShowAddSiteModal(false)} />
+        <AddSiteModal
+          onClose={() => setShowAddSiteModal(false)}
+          onSuccess={() => {
+            fetchSites();
+            toast.success('Site created successfully');
+          }}
+        />
       )}
 
       {/* Add Multiple Sites Modal */}
       {showMultipleSitesModal && (
-        <AddMultipleSitesModal onClose={() => setShowMultipleSitesModal(false)} />
+        <AddMultipleSitesModal
+          onClose={() => setShowMultipleSitesModal(false)}
+          onSuccess={() => {
+            fetchSites();
+            toast.success('Sites created successfully');
+          }}
+        />
       )}
     </div>
   );
