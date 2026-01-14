@@ -59,9 +59,13 @@ export default function CoverageWidget() {
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+    <div className="grid grid-cols-1 gap-6">
       {/* Coverage Section */}
-      <Card className="p-6">
+      <div className="bg-white border border-gray-100 rounded-3xl p-6 shadow-sm hover:shadow-md transition-all">
+        <h3 className="text-lg font-bold mb-5 text-gray-800">
+          Coverage Analytics
+        </h3>
+
         <div className="flex items-start gap-6">
           <CircularProgress percentage={coverageData.percentage} />
           <div className="flex-1">
@@ -78,7 +82,7 @@ export default function CoverageWidget() {
                   <td className="py-2 text-right font-medium">{coverageData.actualShifts}</td>
                 </tr>
                 <tr>
-                  <td className="py-2 text-gray-700 font-semibold">Coverage to Actual HRS Difference</td>
+                  <td className="py-2 text-gray-700 font-semibold">Difference</td>
                   <td className="py-2 text-right font-semibold">{coverageData.differenceHRS}</td>
                   <td className="py-2 text-right font-semibold">{coverageData.differenceShifts}</td>
                 </tr>
@@ -91,10 +95,14 @@ export default function CoverageWidget() {
             </table>
           </div>
         </div>
-      </Card>
+      </div>
 
       {/* Roster Section */}
-      <Card className="p-6">
+      <div className="bg-white border border-gray-100 rounded-3xl p-6 shadow-sm hover:shadow-md transition-all">
+        <h3 className="text-lg font-bold mb-5 text-gray-800">
+          Roster Analytics
+        </h3>
+
         <div className="flex items-start gap-6">
           <CircularProgress percentage={rosterData.percentage} />
           <div className="flex-1">
@@ -111,7 +119,7 @@ export default function CoverageWidget() {
                   <td className="py-2 text-right font-medium">{rosterData.actualShifts}</td>
                 </tr>
                 <tr>
-                  <td className="py-2 text-gray-700 font-semibold">Roster to Actual HRS Difference</td>
+                  <td className="py-2 text-gray-700 font-semibold">Difference</td>
                   <td className="py-2 text-right font-semibold">{rosterData.differenceHRS}</td>
                   <td className="py-2 text-right font-semibold">{rosterData.differenceShifts}</td>
                 </tr>
@@ -124,7 +132,7 @@ export default function CoverageWidget() {
             </table>
           </div>
         </div>
-      </Card>
+      </div>
     </div>
   );
 }

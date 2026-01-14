@@ -1,12 +1,11 @@
 import { Plane, RotateCw, Maximize2, ChevronLeft, ChevronRight, XCircle, CheckCircle, AlertCircle } from "lucide-react";
-import { Card } from "../ui/Card";
 import { Button } from "../ui/Button";
 
 export default function LeaveRequestsWidget() {
   const stats = [
-    { label: "Awaiting", value: 0, icon: AlertCircle, color: "text-yellow-600" },
-    { label: "Approved", value: 0, icon: CheckCircle, color: "text-green-600" },
-    { label: "Declined", value: 0, icon: XCircle, color: "text-red-600" },
+    { label: "Awaiting", value: 0, icon: AlertCircle, color: "text-yellow-600", bgColor: "bg-yellow-50" },
+    { label: "Approved", value: 0, icon: CheckCircle, color: "text-green-600", bgColor: "bg-green-50" },
+    { label: "Declined", value: 0, icon: XCircle, color: "text-red-600", bgColor: "bg-red-50" },
   ];
 
   const columns = [
@@ -19,12 +18,12 @@ export default function LeaveRequestsWidget() {
   ];
 
   return (
-    <Card className="overflow-hidden">
+    <div className="bg-white border border-gray-100 rounded-3xl overflow-hidden shadow-sm">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between">
+      <div className="bg-white border-b border-gray-100 px-5 py-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Plane className="w-5 h-5 text-gray-700" />
-          <h3 className="text-base font-semibold text-gray-900">Leave Requests</h3>
+          <Plane className="w-5 h-5 text-blue-500" />
+          <h3 className="text-base font-bold text-gray-800">Leave Requests</h3>
         </div>
         <div className="flex items-center gap-2">
           <button className="p-1.5 hover:bg-gray-100 rounded transition-colors">
@@ -113,6 +112,6 @@ export default function LeaveRequestsWidget() {
           Next
         </Button>
       </div>
-    </Card>
+    </div>
   );
 }

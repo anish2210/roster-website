@@ -23,7 +23,8 @@ import { Button } from "../components/ui/Button";
 import { Select } from "../components/ui/Select";
 import { Input } from "../components/ui/Input";
 import { Avatar, AvatarFallback } from "../components/ui/Avatar";
-import { schedulerApi, weatherApi } from "../lib/api";
+import { schedulerApi, weatherApi, shiftApi } from "../lib/api";
+import AddShiftModal from "../components/scheduler/AddShiftModal";
 
 export default function Scheduler() {
   const [selectedSite, setSelectedSite] = useState("");
@@ -32,11 +33,25 @@ export default function Scheduler() {
   const [optionsOpen, setOptionsOpen] = useState(false);
   const optionsRef = useRef(null);
 
+  // Current start date for the calendar view
+  const [currentStartDate, setCurrentStartDate] = useState(new Date(2025, 11, 22));
+
   // API state
   const [sites, setSites] = useState([]);
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(false);
   const [weatherData, setWeatherData] = useState([]);
+  const [shifts, setShifts] = useState([]);
+
+  // Modal state
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalData, setModalData] = useState({
+    employeeId: null,
+    date: null
+  });
+
+  // Hover state
+  const [hoveredCell, setHoveredCell] = useState(null);
 
   // Fetch sites on mount
   useEffect(() => {
@@ -51,28 +66,55 @@ export default function Scheduler() {
     fetchSites();
   }, []);
 
-  // Fetch employees when site is selected
+  // Fetch employees and shifts when site is selected
   useEffect(() => {
     if (!selectedSite) {
       setEmployees([]);
       setWeatherData([]);
+      setShifts([]);
       return;
     }
 
-    const fetchEmployees = async () => {
+    const fetchData = async () => {
       try {
         setLoading(true);
         const response = await schedulerApi.getSiteEmployees(selectedSite);
-        setEmployees(response.data.data);
+        const employeesData = response.data.data;
+
+        // Transform employee data to match the UI format
+        const transformedEmployees = employeesData.map(emp => ({
+          id: emp.id,
+          name: `${emp.firstName} ${emp.lastName}`,
+          initials: `${emp.firstName[0]}${emp.lastName[0]}`.toUpperCase(),
+          hours: '0.00',
+          phone: emp.phone || 'N/A',
+          position: emp.position,
+          firstName: emp.firstName,
+          lastName: emp.lastName
+        }));
+
+        setEmployees(transformedEmployees);
+
+        // Fetch shifts for the current date range
+        const numDays = viewMode === "week" ? 7 : viewMode === "2weeks" ? 14 : viewMode === "3weeks" ? 21 : 28;
+        const endDate = new Date(currentStartDate);
+        endDate.setDate(endDate.getDate() + numDays - 1);
+
+        const shiftsResponse = await schedulerApi.getSiteShifts(
+          selectedSite,
+          currentStartDate.toISOString().split('T')[0],
+          endDate.toISOString().split('T')[0]
+        );
+        setShifts(shiftsResponse.data.data);
       } catch (err) {
-        toast.error('Failed to load employees');
+        toast.error('Failed to load data');
       } finally {
         setLoading(false);
       }
     };
 
-    fetchEmployees();
-  }, [selectedSite]);
+    fetchData();
+  }, [selectedSite, currentStartDate, viewMode]);
 
   // Fetch weather when site is selected
   useEffect(() => {
@@ -114,38 +156,48 @@ export default function Scheduler() {
 
   // Generate date columns and range based on view mode
   const { dateColumns, dateRange } = useMemo(() => {
-    const today = new Date(2025, 11, 22); // Dec 22, 2025
     const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
     let numDays = 0;
-    let rangeText = "";
 
     if (viewMode === "week") {
       numDays = 7;
-      rangeText = "Current Week";
     } else if (viewMode === "2weeks") {
       numDays = 14;
-      const endDate = new Date(today);
-      endDate.setDate(endDate.getDate() + 13);
-      rangeText = `22 Dec 25 - ${endDate.getDate()} ${months[endDate.getMonth()]} ${endDate.getFullYear().toString().slice(2)}`;
     } else if (viewMode === "3weeks") {
       numDays = 21;
-      rangeText = "22 Dec 25 - 11 Jan 26";
     } else { // 4weeks
       numDays = 28;
-      rangeText = "22 Dec 25 - 18 Jan 26";
     }
 
+    const endDate = new Date(currentStartDate);
+    endDate.setDate(endDate.getDate() + numDays - 1);
+
+    const startDay = currentStartDate.getDate();
+    const startMonth = months[currentStartDate.getMonth()];
+    const startYear = currentStartDate.getFullYear().toString().slice(2);
+    const endDay = endDate.getDate();
+    const endMonth = months[endDate.getMonth()];
+    const endYear = endDate.getFullYear().toString().slice(2);
+
+    const rangeText = `${startDay} ${startMonth} ${startYear} - ${endDay} ${endMonth} ${endYear}`;
+
     const columns = [];
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
     for (let i = 0; i < numDays; i++) {
-      const date = new Date(today);
+      const date = new Date(currentStartDate);
       date.setDate(date.getDate() + i);
       const dayName = days[date.getDay()];
       const dayNum = date.getDate();
       const monthName = months[date.getMonth()];
 
-      if (i === 0) {
+      // Check if this is today
+      const isToday = date.getTime() === today.getTime();
+
+      if (isToday) {
         columns.push(`TODAY`);
       } else {
         columns.push(`${dayName} ${dayNum}, ${monthName}`);
@@ -153,15 +205,107 @@ export default function Scheduler() {
     }
 
     return { dateColumns: columns, dateRange: rangeText };
-  }, [viewMode]);
+  }, [viewMode, currentStartDate]);
+
+  // Navigation functions
+  const handlePreviousPeriod = () => {
+    const numDays = viewMode === "week" ? 7 : viewMode === "2weeks" ? 14 : viewMode === "3weeks" ? 21 : 28;
+    const newDate = new Date(currentStartDate);
+    newDate.setDate(newDate.getDate() - numDays);
+    setCurrentStartDate(newDate);
+  };
+
+  const handleNextPeriod = () => {
+    const numDays = viewMode === "week" ? 7 : viewMode === "2weeks" ? 14 : viewMode === "3weeks" ? 21 : 28;
+    const newDate = new Date(currentStartDate);
+    newDate.setDate(newDate.getDate() + numDays);
+    setCurrentStartDate(newDate);
+  };
+
+  const handleToday = () => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    setCurrentStartDate(today);
+  };
+
+  // Handle opening add shift modal
+  const handleAddShift = (employeeId, dateIndex) => {
+    const targetDate = new Date(currentStartDate);
+    targetDate.setDate(targetDate.getDate() + dateIndex);
+
+    setModalData({
+      employeeId: employeeId,
+      date: targetDate.toISOString().split('T')[0]
+    });
+    setIsModalOpen(true);
+  };
+
+  // Handle saving a shift
+  const handleSaveShift = async (shiftData) => {
+    try {
+      const response = await shiftApi.create(shiftData);
+      toast.success('Shift created successfully');
+      setIsModalOpen(false);
+
+      // Refresh shifts only if the created shift is for the currently selected site
+      const createdShift = response.data.data;
+      if (selectedSite && createdShift.siteId === selectedSite) {
+        const numDays = viewMode === "week" ? 7 : viewMode === "2weeks" ? 14 : viewMode === "3weeks" ? 21 : 28;
+        const endDate = new Date(currentStartDate);
+        endDate.setDate(endDate.getDate() + numDays - 1);
+
+        const shiftsResponse = await schedulerApi.getSiteShifts(
+          selectedSite,
+          currentStartDate.toISOString().split('T')[0],
+          endDate.toISOString().split('T')[0]
+        );
+        setShifts(shiftsResponse.data.data);
+      } else if (createdShift.siteId) {
+        // If shift was created for a different site, switch to that site
+        setSelectedSite(createdShift.siteId);
+      }
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed to create shift');
+    }
+  };
+
+  // Get shifts for a specific employee and date
+  const getShiftsForCell = (employeeId, dateIndex) => {
+    const targetDate = new Date(currentStartDate);
+    targetDate.setDate(targetDate.getDate() + dateIndex);
+    const targetDateStr = targetDate.toISOString().split('T')[0];
+
+    return shifts.filter(shift => {
+      const shiftDate = new Date(shift.date).toISOString().split('T')[0];
+      // For open shifts (employeeId is null), only match if both are null
+      if (employeeId === null) {
+        return shiftDate === targetDateStr && shift.employeeId === null;
+      }
+      return shiftDate === targetDateStr && shift.employeeId === employeeId;
+    });
+  };
+
+  // Format time from ISO string to HH:MM
+  const formatTime = (isoString) => {
+    const date = new Date(isoString);
+    return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+  };
+
+  // Calculate shift duration in hours
+  const calculateShiftDuration = (startTime, endTime) => {
+    const start = new Date(startTime);
+    const end = new Date(endTime);
+    const hours = (end - start) / (1000 * 60 * 60);
+    return hours.toFixed(2);
+  };
 
   const stats = [
     { label: "Coverage Hrs", value: "0.00", color: "bg-green-500" },
     { label: "Confirmed Hrs", value: "0.00", color: "bg-green-500" },
     { label: "Tentative Hrs", value: "0.00", color: "bg-red-500" },
-    { label: "Published Shifts", value: "0", color: "bg-green-500" },
+    { label: "Published Shifts", value: shifts.filter(s => s.status === 'SCHEDULED').length.toString(), color: "bg-green-500" },
     { label: "Unpublished Shifts", value: "0", color: "bg-yellow-500" },
-    { label: "Open Shifts", value: "0", color: "bg-red-500" },
+    { label: "Open Shifts", value: shifts.filter(s => !s.employeeId).length.toString(), color: "bg-red-500" },
     { label: "Warnings", value: "0", color: "bg-orange-500" },
   ];
 
@@ -190,8 +334,7 @@ export default function Scheduler() {
     if (!weatherData || weatherData.length === 0) return null;
 
     // Calculate the actual date for this column
-    const today = new Date(2025, 11, 22);
-    const targetDate = new Date(today);
+    const targetDate = new Date(currentStartDate);
     targetDate.setDate(targetDate.getDate() + dateIndex);
     const targetDateStr = targetDate.toISOString().split('T')[0];
 
@@ -202,8 +345,8 @@ export default function Scheduler() {
   return (
     <div className="flex flex-col h-screen bg-white">
       {/* Top Toolbar */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 bg-white">
-        <div className="flex items-center gap-3">
+      <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between px-4 py-3 border-b border-gray-200 bg-white gap-3">
+        <div className="flex items-center gap-2 flex-wrap">
           <Select
             value={selectedSite}
             onChange={(e) => setSelectedSite(e.target.value)}
@@ -240,22 +383,25 @@ export default function Scheduler() {
           </Button>
         </div>
 
-        <div className="flex items-center gap-3">
-          <Button variant="outline" size="icon">
+        <div className="flex items-center gap-2">
+          <Button variant="outline" size="icon" onClick={handlePreviousPeriod}>
             <ChevronLeft className="h-4 w-4" />
           </Button>
 
-          <div className="flex items-center gap-2 px-3 py-2 border border-gray-300 rounded-md min-w-[160px] justify-center">
-            <span className="text-sm font-medium">{dateRange}</span>
-            <ChevronDown className="h-4 w-4" />
-          </div>
+          <button
+            onClick={handleToday}
+            className="flex items-center gap-2 px-2 sm:px-3 py-2 border border-gray-300 rounded-md min-w-[150px] sm:min-w-[200px] justify-center hover:bg-gray-50 transition-colors"
+          >
+            <span className="text-xs sm:text-sm font-medium truncate">{dateRange}</span>
+            <ChevronDown className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+          </button>
 
-          <Button variant="outline" size="icon">
+          <Button variant="outline" size="icon" onClick={handleNextPeriod}>
             <ChevronRight className="h-4 w-4" />
           </Button>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           <Select
             value={viewMode}
             onChange={(e) => setViewMode(e.target.value)}
@@ -331,16 +477,22 @@ export default function Scheduler() {
             )}
           </div>
 
-          <Button variant="success">
-            No Shifts Published
-          </Button>
+          {shifts.filter(s => s.status === 'SCHEDULED').length > 0 ? (
+            <Button variant="success">
+              Publish {shifts.filter(s => s.status === 'SCHEDULED').length} Shift{shifts.filter(s => s.status === 'SCHEDULED').length !== 1 ? 's' : ''}
+            </Button>
+          ) : (
+            <Button variant="outline" className="bg-gray-100">
+              No Shifts Published
+            </Button>
+          )}
         </div>
       </div>
 
       {/* Main Content Area */}
       <div className="flex flex-1 overflow-hidden">
         {/* Left Sidebar */}
-        <div className="w-[185px] border-r border-gray-200 flex flex-col bg-gray-50">
+        <div className="w-[120px] sm:w-[185px] border-r border-gray-200 flex flex-col bg-gray-50">
           <div className="p-3 border-b border-gray-200">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -520,13 +672,28 @@ export default function Scheduler() {
 
             {/* Location View - Only show Open Shift row */}
             {viewType === "location" && (
-              <div className="flex border-b border-gray-200 h-[73px]">
-                {dateColumns.map((_, index) => (
-                  <div
-                    key={index}
-                    className="w-[140px] border-r border-gray-200 bg-white hover:bg-gray-50 cursor-pointer"
-                  />
-                ))}
+              <div className="flex border-b border-gray-200 min-h-[90px]">
+                {dateColumns.map((_, index) => {
+                  const cellKey = `location-${index}`;
+                  const isHovered = hoveredCell === cellKey;
+                  return (
+                    <div
+                      key={index}
+                      className="w-[140px] border-r border-gray-200 bg-white hover:bg-gray-50 cursor-pointer relative group"
+                      onMouseEnter={() => setHoveredCell(cellKey)}
+                      onMouseLeave={() => setHoveredCell(null)}
+                    >
+                      {isHovered && (
+                        <button
+                          onClick={() => handleAddShift(null, index)}
+                          className="absolute inset-0 flex items-center justify-center bg-blue-50 bg-opacity-90 text-blue-600 text-sm font-medium hover:bg-blue-100 transition-colors"
+                        >
+                          + Add shift
+                        </button>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             )}
 
@@ -534,24 +701,114 @@ export default function Scheduler() {
             {(viewType === "employee" || viewType === "position") && (
               <>
                 {/* Open Shift Row */}
-                <div className="flex border-b border-gray-200 h-[73px]">
-                  {dateColumns.map((_, index) => (
-                    <div
-                      key={index}
-                      className="w-[140px] border-r border-gray-200 bg-white hover:bg-gray-50 cursor-pointer"
-                    />
-                  ))}
+                <div className="flex border-b border-gray-200 min-h-[90px]">
+                  {dateColumns.map((_, index) => {
+                    const cellKey = `open-${index}`;
+                    const isHovered = hoveredCell === cellKey;
+                    const cellShifts = getShiftsForCell(null, index);
+
+                    return (
+                      <div
+                        key={index}
+                        className="w-[140px] border-r border-gray-200 bg-white hover:bg-gray-50 cursor-pointer relative p-1"
+                        onMouseEnter={() => setHoveredCell(cellKey)}
+                        onMouseLeave={() => setHoveredCell(null)}
+                      >
+                        {/* Display existing shifts */}
+                        {cellShifts.length > 0 && (
+                          <div className="space-y-1">
+                            {cellShifts.map((shift) => (
+                              <div
+                                key={shift.id}
+                                className="border border-gray-200 rounded overflow-hidden bg-white text-xs"
+                              >
+                                <div className="px-2 py-1">
+                                  <div className="font-medium text-gray-900">
+                                    {formatTime(shift.startTime)} - {formatTime(shift.endTime)} ({calculateShiftDuration(shift.startTime, shift.endTime)} Hrs)
+                                  </div>
+                                  <div className="text-gray-600 flex items-center gap-1 mt-0.5">
+                                    <MapPin className="h-3 w-3" />
+                                    <span>{shift.site?.shortName || 'Unknown Site'}</span>
+                                  </div>
+                                </div>
+                                {shift.status === 'SCHEDULED' && (
+                                  <div className="bg-green-500 text-white px-2 py-0.5 font-medium">
+                                    Published
+                                  </div>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        )}
+
+                        {/* Show add shift button on hover if no shifts or space available */}
+                        {isHovered && cellShifts.length === 0 && (
+                          <button
+                            onClick={() => handleAddShift(null, index)}
+                            className="absolute inset-0 flex items-center justify-center bg-blue-50 bg-opacity-90 text-blue-600 text-sm font-medium hover:bg-blue-100 transition-colors"
+                          >
+                            + Add shift
+                          </button>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
 
                 {/* Employee Rows */}
                 {employees.map((employee) => (
-                  <div key={employee.id} className="flex border-b border-gray-200 h-[73px]">
-                    {dateColumns.map((_, index) => (
-                      <div
-                        key={index}
-                        className="w-[140px] border-r border-gray-200 bg-white hover:bg-gray-50 cursor-pointer"
-                      />
-                    ))}
+                  <div key={employee.id} className="flex border-b border-gray-200 min-h-[90px]">
+                    {dateColumns.map((_, index) => {
+                      const cellKey = `${employee.id}-${index}`;
+                      const isHovered = hoveredCell === cellKey;
+                      const cellShifts = getShiftsForCell(employee.id, index);
+
+                      return (
+                        <div
+                          key={index}
+                          className="w-[140px] border-r border-gray-200 bg-white hover:bg-gray-50 cursor-pointer relative p-1"
+                          onMouseEnter={() => setHoveredCell(cellKey)}
+                          onMouseLeave={() => setHoveredCell(null)}
+                        >
+                          {/* Display existing shifts */}
+                          {cellShifts.length > 0 && (
+                            <div className="space-y-1">
+                              {cellShifts.map((shift) => (
+                                <div
+                                  key={shift.id}
+                                  className="border border-gray-200 rounded overflow-hidden bg-white text-xs"
+                                >
+                                  <div className="px-2 py-1">
+                                    <div className="font-medium text-gray-900">
+                                      {formatTime(shift.startTime)} - {formatTime(shift.endTime)} ({calculateShiftDuration(shift.startTime, shift.endTime)} Hrs)
+                                    </div>
+                                    <div className="text-gray-600 flex items-center gap-1 mt-0.5">
+                                      <MapPin className="h-3 w-3" />
+                                      <span>{shift.site?.shortName || 'Unknown Site'}</span>
+                                    </div>
+                                  </div>
+                                  {shift.status === 'SCHEDULED' && (
+                                    <div className="bg-green-500 text-white px-2 py-0.5 font-medium">
+                                      Published
+                                    </div>
+                                  )}
+                                </div>
+                              ))}
+                            </div>
+                          )}
+
+                          {/* Show add shift button on hover if no shifts or space available */}
+                          {isHovered && cellShifts.length === 0 && (
+                            <button
+                              onClick={() => handleAddShift(employee.id, index)}
+                              className="absolute inset-0 flex items-center justify-center bg-blue-50 bg-opacity-90 text-blue-600 text-sm font-medium hover:bg-blue-100 transition-colors"
+                            >
+                              + Add shift
+                            </button>
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
                 ))}
               </>
@@ -573,6 +830,18 @@ export default function Scheduler() {
           ))}
         </div>
       </div>
+
+      {/* Add Shift Modal */}
+      <AddShiftModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSave={handleSaveShift}
+        employees={employees}
+        sites={sites}
+        selectedSite={selectedSite}
+        selectedDate={modalData.date}
+        selectedEmployeeId={modalData.employeeId}
+      />
     </div>
   );
 }

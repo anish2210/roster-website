@@ -57,10 +57,37 @@ export const schedulerApi = {
     api.get(`/scheduler/sites/${siteId}/shifts`, { params: { startDate, endDate } })
 };
 
+// Shift API endpoints
+export const shiftApi = {
+  getById: (id) => api.get(`/scheduler/shifts/${id}`),
+  create: (data) => api.post('/scheduler/shifts', data),
+  update: (id, data) => api.put(`/scheduler/shifts/${id}`, data),
+  delete: (id) => api.delete(`/scheduler/shifts/${id}`)
+};
+
 // Weather API endpoints
 export const weatherApi = {
   getForecast: (latitude, longitude) =>
     api.get('/weather/forecast', { params: { latitude, longitude } })
+};
+
+// Employee API endpoints
+export const employeeApi = {
+  getAll: (params) => api.get('/employees', { params }),
+  getById: (id) => api.get(`/employees/${id}`),
+  create: (data) => api.post('/employees', data),
+  update: (id, data) => api.put(`/employees/${id}`, data),
+  delete: (id) => api.delete(`/employees/${id}`),
+  assignToSites: (id, siteIds) => api.post(`/employees/${id}/sites`, { siteIds })
+};
+
+// User/Auth API endpoints
+export const userApi = {
+  login: (credentials) => api.post('/auth/login', credentials),
+  getMyShifts: (startDate, endDate) =>
+    api.get('/user/shifts', { params: { startDate, endDate } }),
+  changePassword: (data) => api.post('/user/change-password', data),
+  getProfile: () => api.get('/user/profile')
 };
 
 export default api;

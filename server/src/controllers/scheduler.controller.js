@@ -54,8 +54,72 @@ const getSiteShifts = asyncHandler(async (req, res) => {
   });
 });
 
+/**
+ * Get a single shift by ID
+ * @route GET /api/scheduler/shifts/:id
+ */
+const getShiftById = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  const shift = await schedulerService.getShiftById(id);
+
+  res.json({
+    success: true,
+    data: shift
+  });
+});
+
+/**
+ * Create a new shift
+ * @route POST /api/scheduler/shifts
+ */
+const createShift = asyncHandler(async (req, res) => {
+  const shift = await schedulerService.createShift(req.body);
+
+  res.status(201).json({
+    success: true,
+    data: shift,
+    message: 'Shift created successfully'
+  });
+});
+
+/**
+ * Update a shift
+ * @route PUT /api/scheduler/shifts/:id
+ */
+const updateShift = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  const shift = await schedulerService.updateShift(id, req.body);
+
+  res.json({
+    success: true,
+    data: shift,
+    message: 'Shift updated successfully'
+  });
+});
+
+/**
+ * Delete a shift
+ * @route DELETE /api/scheduler/shifts/:id
+ */
+const deleteShift = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  const result = await schedulerService.deleteShift(id);
+
+  res.json({
+    success: true,
+    data: result
+  });
+});
+
 module.exports = {
   getActiveSites,
   getSiteEmployees,
-  getSiteShifts
+  getSiteShifts,
+  getShiftById,
+  createShift,
+  updateShift,
+  deleteShift
 };

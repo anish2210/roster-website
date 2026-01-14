@@ -1,3 +1,4 @@
+
 const { validationResult } = require('express-validator');
 
 /**
@@ -24,6 +25,13 @@ const validate = (req, res, next) => {
       message: 'Validation failed',
       errors: formattedErrors
     });
+
+
+
+
+
+    
+    
   }
 
   next();

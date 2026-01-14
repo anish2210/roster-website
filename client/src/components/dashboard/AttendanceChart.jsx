@@ -52,9 +52,9 @@ export default function AttendanceChart() {
 
   // Live Attendance Table View
   const renderLiveAttendance = () => (
-    <Card className="p-0">
+    <div className="bg-white border border-gray-100 rounded-3xl p-0 shadow-sm overflow-hidden">
       {/* Date Selector */}
-      <div className="border-b border-gray-200 px-4 py-3 flex items-center justify-between">
+      <div className="border-b border-gray-100 px-4 py-3 flex items-center justify-between">
         <div className="flex items-center justify-center flex-1">
           <button className="p-1 hover:bg-gray-100 rounded">
             <ChevronLeft className="w-4 h-4" />
@@ -155,14 +155,14 @@ export default function AttendanceChart() {
           </Button>
         </div>
       </div>
-    </Card>
+    </div>
   );
 
   // Chart View
   const renderChartView = () => (
-    <div className="flex gap-4">
+    <div className="flex gap-6">
       {/* Chart Section */}
-      <Card className="flex-1 p-4">
+      <div className="flex-1 bg-white border border-gray-100 rounded-3xl p-6 shadow-sm">
         {/* Date Selector */}
         <div className="flex items-center justify-center mb-6">
           <button className="p-1 hover:bg-gray-100 rounded">
@@ -209,10 +209,10 @@ export default function AttendanceChart() {
             </div>
           ))}
         </div>
-      </Card>
+      </div>
 
       {/* Stats Sidebar */}
-      <Card className="w-80 p-4">
+      <div className="w-80 bg-white border border-gray-100 rounded-3xl p-6 shadow-sm">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <button className="p-1 hover:bg-gray-100 rounded">
@@ -249,7 +249,7 @@ export default function AttendanceChart() {
             </div>
           ))}
         </div>
-      </Card>
+      </div>
     </div>
   );
 
@@ -259,20 +259,20 @@ export default function AttendanceChart() {
       <div className="flex items-center justify-end gap-2 mb-4">
         <button
           onClick={() => setViewMode("shift")}
-          className={`px-4 py-2 text-sm rounded border ${
+          className={`px-5 py-2.5 text-sm font-semibold rounded-xl transition-all ${
             viewMode === "shift"
-              ? "bg-blue-600 text-white border-blue-600"
-              : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
+              ? "bg-blue-500 text-white shadow-md hover:bg-blue-600"
+              : "bg-white text-gray-600 border border-gray-200 hover:bg-gray-50 shadow-sm"
           }`}
         >
           Attendance By Shift
         </button>
         <button
           onClick={() => setViewMode("live")}
-          className={`px-4 py-2 text-sm rounded border ${
+          className={`px-5 py-2.5 text-sm font-semibold rounded-xl transition-all ${
             viewMode === "live"
-              ? "bg-blue-600 text-white border-blue-600"
-              : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
+              ? "bg-blue-500 text-white shadow-md hover:bg-blue-600"
+              : "bg-white text-gray-600 border border-gray-200 hover:bg-gray-50 shadow-sm"
           }`}
         >
           Live Attendance

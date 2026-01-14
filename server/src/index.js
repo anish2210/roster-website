@@ -37,6 +37,7 @@ app.get('/health', (req, res) => {
 app.use('/api/sites', require('./routes/sites.routes'));
 app.use('/api/scheduler', require('./routes/scheduler.routes'));
 app.use('/api/weather', require('./routes/weather.routes'));
+app.use('/api/employees', require('./routes/employee.routes'));
 
 // 404 handler for unknown routes
 app.use((req, res) => {
