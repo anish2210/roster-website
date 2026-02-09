@@ -82,25 +82,25 @@ export default function ChangePassword() {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-white">
+    <div className="flex flex-col h-screen bg-[hsl(220,15%,8%)]">
       {/* Top Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 bg-white">
+      <div className="flex items-center justify-between px-4 py-3 border-b border-[hsl(220,15%,20%)] bg-[hsl(220,15%,12%)]">
         <div className="flex items-center gap-2">
-          <KeyRound className="w-5 h-5 text-gray-600" />
-          <h1 className="text-lg font-semibold text-gray-800">Change Password</h1>
+          <KeyRound className="w-5 h-5 text-gray-400" />
+          <h1 className="text-lg font-semibold text-gray-100">Change Password</h1>
         </div>
       </div>
 
       {/* Main Content */}
       <div className="flex-1 overflow-auto p-4 sm:p-6">
         <div className="max-w-lg mx-auto">
-          <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
+          <div className="bg-[hsl(220,15%,14%)] border border-[hsl(220,15%,20%)] rounded-xl shadow-lg p-6">
             <div className="mb-6">
-              <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-4">
-                <Lock className="w-6 h-6 text-blue-600" />
+              <div className="w-12 h-12 bg-orange-500/20 rounded-xl flex items-center justify-center mb-4">
+                <Lock className="w-6 h-6 text-orange-500" />
               </div>
-              <h2 className="text-lg font-semibold text-gray-800">Update your password</h2>
-              <p className="text-sm text-gray-500 mt-1">
+              <h2 className="text-lg font-semibold text-gray-100">Update your password</h2>
+              <p className="text-sm text-gray-400 mt-1">
                 Enter your current password and choose a new one.
               </p>
             </div>
@@ -110,7 +110,7 @@ export default function ChangePassword() {
               <div className="space-y-2">
                 <Label htmlFor="oldPassword">Current Password</Label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500" />
                   <Input
                     id="oldPassword"
                     name="oldPassword"
@@ -122,7 +122,7 @@ export default function ChangePassword() {
                   />
                 </div>
                 {errors.oldPassword && (
-                  <p className="text-red-500 text-xs">{errors.oldPassword}</p>
+                  <p className="text-red-400 text-xs">{errors.oldPassword}</p>
                 )}
               </div>
 
@@ -130,7 +130,7 @@ export default function ChangePassword() {
               <div className="space-y-2">
                 <Label htmlFor="newPassword">New Password</Label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500" />
                   <Input
                     id="newPassword"
                     name="newPassword"
@@ -142,7 +142,7 @@ export default function ChangePassword() {
                   />
                 </div>
                 {errors.newPassword && (
-                  <p className="text-red-500 text-xs">{errors.newPassword}</p>
+                  <p className="text-red-400 text-xs">{errors.newPassword}</p>
                 )}
               </div>
 
@@ -150,7 +150,7 @@ export default function ChangePassword() {
               <div className="space-y-2">
                 <Label htmlFor="confirmPassword">Confirm New Password</Label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500" />
                   <Input
                     id="confirmPassword"
                     name="confirmPassword"
@@ -162,7 +162,7 @@ export default function ChangePassword() {
                   />
                 </div>
                 {errors.confirmPassword && (
-                  <p className="text-red-500 text-xs">{errors.confirmPassword}</p>
+                  <p className="text-red-400 text-xs">{errors.confirmPassword}</p>
                 )}
               </div>
 
@@ -181,9 +181,9 @@ export default function ChangePassword() {
           </div>
 
           {/* Password Requirements */}
-          <div className="mt-4 p-4 bg-gray-50 border border-gray-200 rounded-xl">
-            <h3 className="text-sm font-medium text-gray-700 mb-2">Password Requirements</h3>
-            <ul className="text-xs text-gray-500 space-y-1">
+          <div className="mt-4 p-4 bg-orange-500/10 border border-orange-500/20 rounded-xl">
+            <h3 className="text-sm font-medium text-orange-400 mb-2">Password Requirements</h3>
+            <ul className="text-xs text-gray-400 space-y-1">
               <li>- Minimum 6 characters</li>
               <li>- Mix of letters and numbers recommended</li>
               <li>- Avoid using common passwords</li>

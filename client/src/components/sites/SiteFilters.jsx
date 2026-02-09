@@ -1,53 +1,36 @@
-import { Search, ChevronDown } from "lucide-react";
-import { useState } from "react";
+import Badge from "../ui/Badge";
+import { MapPin, ChevronDown } from "lucide-react";
 
-export default function SiteFilters({ showInactive, setShowInactive }) {
-  const [searchField, setSearchField] = useState("Site Name");
-
+export default function SiteRow({ site }) {
   return (
-    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
-      {/* Search Bar */}
-      <div className="w-full sm:flex-1 sm:max-w-md">
-        <div className="relative flex items-center border border-gray-300 rounded-md bg-white">
-          <Search className="w-4 h-4 text-gray-400 ml-3 flex-shrink-0" />
-
-          {/* Search Field Dropdown */}
-          <div className="relative flex-shrink-0">
-            <button className="flex items-center gap-1 px-2 sm:px-3 py-2 text-xs sm:text-sm border-r border-gray-300 hover:bg-gray-50 whitespace-nowrap">
-              {searchField}
-              <ChevronDown className="w-3 h-3 sm:w-4 sm:h-4 text-gray-500" />
-            </button>
-          </div>
-
-          {/* Search Input */}
-          <input
-            type="text"
-            placeholder=""
-            className="flex-1 px-2 sm:px-3 py-2 text-xs sm:text-sm outline-none min-w-0"
-          />
-        </div>
-      </div>
-
-      {/* Display Inactive Sites Toggle */}
-      <div className="flex items-center gap-2 text-xs sm:text-sm whitespace-nowrap">
-        <span className="text-gray-700 hidden lg:inline">Display Inactive Sites</span>
-        <span className="text-gray-700 lg:hidden">Inactive</span>
-        <button
-          onClick={() => setShowInactive(!showInactive)}
-          className={`relative inline-flex items-center h-5 w-10 sm:h-6 sm:w-12 rounded-full transition-colors flex-shrink-0 ${
-            showInactive ? "bg-blue-600" : "bg-red-500"
-          }`}
-        >
-          <span
-            className={`inline-block h-3.5 w-3.5 sm:h-4 sm:w-4 transform rounded-full bg-white transition-transform ${
-              showInactive ? "translate-x-5 sm:translate-x-7" : "translate-x-1"
-            }`}
-          />
+    <tr className="hover:bg-[hsl(220,15%,16%)] transition-colors border-b border-[hsl(220,15%,20%)]">
+      <td className="px-2 sm:px-3 py-2 sm:py-3 text-center sticky left-0 bg-[hsl(220,15%,14%)] hover:bg-[hsl(220,15%,16%)] z-[5]">
+        <input 
+          type="checkbox" 
+          className="rounded border-[hsl(220,15%,30%)] bg-[hsl(220,15%,18%)] text-orange-600 focus:ring-orange-500 focus:ring-offset-0 cursor-pointer" 
+        />
+      </td>
+      <td className="px-2 sm:px-3 py-2 sm:py-3 text-orange-500 hover:text-orange-400 hover:underline cursor-pointer whitespace-nowrap transition-colors">
+        {site.siteLocationName}
+      </td>
+      <td className="px-2 sm:px-3 py-2 sm:py-3 text-gray-300 whitespace-nowrap">{site.shortName}</td>
+      <td className="px-2 sm:px-3 py-2 sm:py-3 text-gray-300 whitespace-nowrap">{site.client}</td>
+      <td className="px-2 sm:px-3 py-2 sm:py-3 text-gray-300 whitespace-nowrap">{site.state}</td>
+      <td className="px-2 sm:px-3 py-2 sm:py-3">
+        <Badge status={site.status} />
+      </td>
+      <td className="px-2 sm:px-3 py-2 sm:py-3 text-center text-gray-300">{site.expiryIn30Days}</td>
+      <td className="px-2 sm:px-3 py-2 sm:py-3 text-center">
+        <button className="text-orange-500 hover:text-orange-400 transition-colors" title="View on Map">
+          <MapPin className="w-4 h-4 sm:w-5 sm:h-5 mx-auto" />
         </button>
-        <span className={`font-medium ${showInactive ? "text-blue-600" : "text-red-500"}`}>
-          {showInactive ? "ON" : "OFF"}
-        </span>
-      </div>
-    </div>
+      </td>
+      <td className="px-2 sm:px-3 py-2 sm:py-3 text-right sticky right-0 bg-[hsl(220,15%,14%)] hover:bg-[hsl(220,15%,16%)] z-[5] relative">
+        <button className="px-2 sm:px-3 py-1.5 bg-[hsl(220,15%,18%)] border border-[hsl(220,15%,30%)] rounded text-xs sm:text-sm text-gray-300 hover:bg-[hsl(220,15%,22%)] transition-colors flex items-center gap-1">
+          Actions
+          <ChevronDown className="w-3 h-3" />
+        </button>
+      </td>
+    </tr>
   );
 }

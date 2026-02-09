@@ -11,14 +11,14 @@ export default function AttendanceChart() {
   const [itemsPerPage, setItemsPerPage] = useState(25);
 
   const attendanceData = [
-    { label: "Working", value: 0, color: "bg-blue-500" },
+    { label: "Working", value: 0, color: "bg-orange-500" },
     { label: "No Show", value: 0, color: "bg-red-500" },
-    { label: "No Activity", value: 0, color: "bg-gray-400" },
-    { label: "Late Arrival", value: 0, color: "bg-orange-400" },
-    { label: "Early Leave", value: 0, color: "bg-yellow-400" },
-    { label: "Left Job Site", value: 0, color: "bg-purple-400" },
-    { label: "Clocked Outside Job Site", value: 0, color: "bg-pink-400" },
-    { label: "Missing Clock-Out", value: 0, color: "bg-indigo-400" },
+    { label: "No Activity", value: 0, color: "bg-gray-500" },
+    { label: "Late Arrival", value: 0, color: "bg-amber-500" },
+    { label: "Early Leave", value: 0, color: "bg-yellow-500" },
+    { label: "Left Job Site", value: 0, color: "bg-orange-400" },
+    { label: "Clocked Outside Job Site", value: 0, color: "bg-orange-300" },
+    { label: "Missing Clock-Out", value: 0, color: "bg-orange-600" },
   ];
 
   const summaryStats = [
@@ -52,29 +52,29 @@ export default function AttendanceChart() {
 
   // Live Attendance Table View
   const renderLiveAttendance = () => (
-    <div className="bg-white border border-gray-100 rounded-3xl p-0 shadow-sm overflow-hidden">
+    <div className="bg-[hsl(220,15%,14%)] border border-[hsl(220,15%,20%)] rounded-3xl p-0 shadow-lg overflow-hidden">
       {/* Date Selector */}
-      <div className="border-b border-gray-100 px-4 py-3 flex items-center justify-between">
+      <div className="border-b border-[hsl(220,15%,20%)] px-4 py-3 flex items-center justify-between">
         <div className="flex items-center justify-center flex-1">
-          <button className="p-1 hover:bg-gray-100 rounded">
+          <button className="p-1 hover:bg-[hsl(220,15%,18%)] rounded text-gray-400">
             <ChevronLeft className="w-4 h-4" />
           </button>
-          <button className="mx-4 text-sm font-medium text-gray-700 hover:text-gray-900 flex items-center gap-1">
+          <button className="mx-4 text-sm font-medium text-gray-200 hover:text-orange-500 flex items-center gap-1">
             {date}
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
           </button>
-          <button className="p-1 hover:bg-gray-100 rounded">
+          <button className="p-1 hover:bg-[hsl(220,15%,18%)] rounded text-gray-400">
             <ChevronRight className="w-4 h-4" />
           </button>
         </div>
 
         <div className="flex items-center gap-2">
-          <button className="p-1.5 hover:bg-gray-100 rounded transition-colors">
-            <RotateCw className="w-4 h-4 text-gray-600" />
+          <button className="p-1.5 hover:bg-[hsl(220,15%,18%)] rounded transition-colors">
+            <RotateCw className="w-4 h-4 text-gray-400" />
           </button>
-          <button className="p-1.5 hover:bg-gray-100 rounded transition-colors flex items-center gap-1 text-sm text-gray-700">
+          <button className="p-1.5 hover:bg-[hsl(220,15%,18%)] rounded transition-colors flex items-center gap-1 text-sm text-gray-300">
             <Settings2 className="w-4 h-4" />
             Columns
           </button>
@@ -94,34 +94,34 @@ export default function AttendanceChart() {
       {/* Table */}
       <div className="overflow-x-auto">
         <table className="w-full">
-          <thead className="bg-gray-50 border-b border-gray-200">
+          <thead className="bg-[hsl(220,15%,16%)] border-b border-[hsl(220,15%,22%)]">
             <tr>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider border-r border-gray-200" colSpan="4">
+              <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider border-r border-[hsl(220,15%,22%)]" colSpan="4">
                 <div className="flex items-center gap-1">
-                  <button className="hover:bg-gray-200 rounded p-0.5">
+                  <button className="hover:bg-[hsl(220,15%,20%)] rounded p-0.5">
                     <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 10l5 5 5-5" />
                     </svg>
                   </button>
                 </div>
               </th>
-              <th className="px-4 py-3 text-center text-xs font-medium text-gray-700 uppercase tracking-wider border-r border-gray-200" colSpan="2">
+              <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider border-r border-[hsl(220,15%,22%)]" colSpan="2">
                 Shift Assignments
               </th>
-              <th className="px-4 py-3 text-center text-xs font-medium text-gray-700 uppercase tracking-wider border-r border-gray-200" colSpan="4">
+              <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider border-r border-[hsl(220,15%,22%)]" colSpan="4">
                 Clocked Record
               </th>
-              <th className="px-4 py-3 text-center text-xs font-medium text-gray-700 uppercase tracking-wider" colSpan="3"></th>
+              <th className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider" colSpan="3"></th>
             </tr>
-            <tr className="bg-gray-100">
+            <tr className="bg-[hsl(220,15%,18%)]">
               {liveAttendanceColumns.map((column, index) => (
                 <th
                   key={index}
-                  className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap"
+                  className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider whitespace-nowrap"
                 >
                   <div className="flex items-center gap-1">
                     {column}
-                    <button className="hover:bg-gray-200 rounded p-0.5">
+                    <button className="hover:bg-[hsl(220,15%,22%)] rounded p-0.5">
                       <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 10l5 5 5-5" />
                       </svg>
@@ -142,8 +142,8 @@ export default function AttendanceChart() {
       </div>
 
       {/* Footer */}
-      <div className="border-t border-gray-200 px-4 py-3 flex items-center justify-between">
-        <div className="text-sm text-gray-600 italic">
+      <div className="border-t border-[hsl(220,15%,22%)] px-4 py-3 flex items-center justify-between">
+        <div className="text-sm text-gray-400 italic">
           Showing 0 to 0 of 0 entries
         </div>
         <div className="flex items-center gap-2">
@@ -162,19 +162,19 @@ export default function AttendanceChart() {
   const renderChartView = () => (
     <div className="flex gap-6">
       {/* Chart Section */}
-      <div className="flex-1 bg-white border border-gray-100 rounded-3xl p-6 shadow-sm">
+      <div className="flex-1 bg-[hsl(220,15%,14%)] border border-[hsl(220,15%,20%)] rounded-3xl p-6 shadow-lg">
         {/* Date Selector */}
         <div className="flex items-center justify-center mb-6">
-          <button className="p-1 hover:bg-gray-100 rounded">
+          <button className="p-1 hover:bg-[hsl(220,15%,18%)] rounded text-gray-400">
             <ChevronLeft className="w-4 h-4" />
           </button>
-          <button className="mx-4 text-sm font-medium text-gray-700 hover:text-gray-900 flex items-center gap-1">
+          <button className="mx-4 text-sm font-medium text-gray-200 hover:text-orange-500 flex items-center gap-1">
             {date}
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
           </button>
-          <button className="p-1 hover:bg-gray-100 rounded">
+          <button className="p-1 hover:bg-[hsl(220,15%,18%)] rounded text-gray-400">
             <ChevronRight className="w-4 h-4" />
           </button>
         </div>
@@ -183,13 +183,13 @@ export default function AttendanceChart() {
         <div className="h-64 flex items-end justify-around gap-2 mb-4">
           {attendanceData.map((item, index) => (
             <div key={index} className="flex flex-col items-center flex-1">
-              <div className="w-full bg-gray-100 rounded-t relative" style={{ height: "200px" }}>
+              <div className="w-full bg-[hsl(220,15%,18%)] rounded-t relative" style={{ height: "200px" }}>
                 <div
                   className={`${item.color} rounded-t absolute bottom-0 w-full transition-all`}
                   style={{ height: `${item.value}%` }}
                 />
               </div>
-              <div className="text-xs text-gray-600 mt-2 text-center w-full px-1 truncate" title={item.label}>
+              <div className="text-xs text-gray-400 mt-2 text-center w-full px-1 truncate" title={item.label}>
                 {item.label}
               </div>
             </div>
@@ -200,10 +200,10 @@ export default function AttendanceChart() {
         <div className="grid grid-cols-4 md:grid-cols-8 gap-4 mt-6 items-start">
           {attendanceData.map((item, index) => (
             <div key={index} className="flex flex-col items-center">
-              <div className="w-16 h-16 rounded-full border-4 border-gray-200 flex items-center justify-center flex-shrink-0">
-                <span className="text-lg font-bold text-gray-900">{item.value}</span>
+              <div className="w-16 h-16 rounded-full border-4 border-[hsl(220,15%,22%)] flex items-center justify-center flex-shrink-0">
+                <span className="text-lg font-bold text-gray-100">{item.value}</span>
               </div>
-              <div className="text-xs text-gray-600 mt-2 text-center w-full px-1 truncate h-4" title={item.label}>
+              <div className="text-xs text-gray-400 mt-2 text-center w-full px-1 truncate h-4" title={item.label}>
                 {item.label}
               </div>
             </div>
@@ -212,14 +212,14 @@ export default function AttendanceChart() {
       </div>
 
       {/* Stats Sidebar */}
-      <div className="w-80 bg-white border border-gray-100 rounded-3xl p-6 shadow-sm">
+      <div className="w-80 bg-[hsl(220,15%,14%)] border border-[hsl(220,15%,20%)] rounded-3xl p-6 shadow-lg">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <button className="p-1 hover:bg-gray-100 rounded">
+            <button className="p-1 hover:bg-[hsl(220,15%,18%)] rounded text-gray-400">
               <ChevronLeft className="w-4 h-4" />
             </button>
-            <span className="text-sm font-medium">Today</span>
-            <button className="p-1 hover:bg-gray-100 rounded">
+            <span className="text-sm font-medium text-gray-200">Today</span>
+            <button className="p-1 hover:bg-[hsl(220,15%,18%)] rounded text-gray-400">
               <ChevronRight className="w-4 h-4" />
             </button>
           </div>
@@ -240,12 +240,12 @@ export default function AttendanceChart() {
               key={index}
               className={`flex items-center justify-between py-2 px-3 rounded ${
                 index >= summaryStats.length - 2
-                  ? "bg-gray-100 font-semibold"
-                  : "hover:bg-gray-50"
+                  ? "bg-[hsl(220,15%,18%)] font-semibold"
+                  : "hover:bg-[hsl(220,15%,16%)]"
               }`}
             >
-              <span className="text-sm text-gray-700">{stat.label}</span>
-              <span className="text-sm font-medium text-gray-900">{stat.value}</span>
+              <span className="text-sm text-gray-300">{stat.label}</span>
+              <span className="text-sm font-medium text-gray-100">{stat.value}</span>
             </div>
           ))}
         </div>
@@ -261,8 +261,8 @@ export default function AttendanceChart() {
           onClick={() => setViewMode("shift")}
           className={`px-5 py-2.5 text-sm font-semibold rounded-xl transition-all ${
             viewMode === "shift"
-              ? "bg-blue-500 text-white shadow-md hover:bg-blue-600"
-              : "bg-white text-gray-600 border border-gray-200 hover:bg-gray-50 shadow-sm"
+              ? "bg-orange-600 text-white shadow-md hover:bg-orange-700"
+              : "bg-[hsl(220,15%,14%)] text-gray-300 border border-[hsl(220,15%,22%)] hover:bg-[hsl(220,15%,18%)] shadow-sm"
           }`}
         >
           Attendance By Shift
@@ -271,8 +271,8 @@ export default function AttendanceChart() {
           onClick={() => setViewMode("live")}
           className={`px-5 py-2.5 text-sm font-semibold rounded-xl transition-all ${
             viewMode === "live"
-              ? "bg-blue-500 text-white shadow-md hover:bg-blue-600"
-              : "bg-white text-gray-600 border border-gray-200 hover:bg-gray-50 shadow-sm"
+              ? "bg-orange-600 text-white shadow-md hover:bg-orange-700"
+              : "bg-[hsl(220,15%,14%)] text-gray-300 border border-[hsl(220,15%,22%)] hover:bg-[hsl(220,15%,18%)] shadow-sm"
           }`}
         >
           Live Attendance

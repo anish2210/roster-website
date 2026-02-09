@@ -28,7 +28,7 @@ export default function ComplianceFilters({ filters, setFilters }) {
   // Get unique values for dropdowns
   const uniqueStatuses = useMemo(
     () => ["All Status", ...new Set(complianceData.map((item) => item.status))],
-    []
+    [],
   );
 
   const uniqueLicenseTypes = useMemo(
@@ -36,7 +36,7 @@ export default function ComplianceFilters({ filters, setFilters }) {
       "All License/Cert. Types",
       ...new Set(complianceData.map((item) => item.licenseCert)),
     ],
-    []
+    [],
   );
 
   const uniqueStates = useMemo(
@@ -44,15 +44,17 @@ export default function ComplianceFilters({ filters, setFilters }) {
       "All States",
       ...new Set(complianceData.map((item) => item.state).filter(Boolean)),
     ],
-    []
+    [],
   );
 
   const uniqueDeptWorkGroups = useMemo(
     () => [
       "All Dept/Work Groups",
-      ...new Set(complianceData.map((item) => item.deptWorkGroup).filter(Boolean)),
+      ...new Set(
+        complianceData.map((item) => item.deptWorkGroup).filter(Boolean),
+      ),
     ],
-    []
+    [],
   );
 
   const expiresOptions = [
@@ -105,7 +107,7 @@ export default function ComplianceFilters({ filters, setFilters }) {
       <div className="mb-4">
         <button
           onClick={handleClearFilters}
-          className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+          className="text-orange-500 hover:text-orange-600 text-sm font-medium transition-colors"
         >
           Clear Filters
         </button>
@@ -121,7 +123,7 @@ export default function ComplianceFilters({ filters, setFilters }) {
               status: e.target.value === "All Status" ? "all" : e.target.value,
             })
           }
-          className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md bg-white"
+          className="w-full px-3 py-2 text-sm border border-[hsl(220,15%,22%)] rounded-lg bg-[hsl(220,15%,16%)] text-gray-100 hover:bg-[hsl(220,15%,18%)] transition-colors focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
         >
           {uniqueStatuses.map((status) => (
             <option key={status} value={status}>
@@ -148,7 +150,7 @@ export default function ComplianceFilters({ filters, setFilters }) {
                   : e.target.value,
             })
           }
-          className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md bg-white"
+          className="w-full px-3 py-2 text-sm border border-[hsl(220,15%,22%)] rounded-lg bg-[hsl(220,15%,16%)] text-gray-100 hover:bg-[hsl(220,15%,18%)] transition-colors focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
         >
           {uniqueLicenseTypes.map((type) => (
             <option key={type} value={type}>
@@ -168,7 +170,7 @@ export default function ComplianceFilters({ filters, setFilters }) {
               state: e.target.value === "All States" ? "all" : e.target.value,
             })
           }
-          className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md bg-white"
+          className="w-full px-3 py-2 text-sm border border-[hsl(220,15%,22%)] rounded-lg bg-[hsl(220,15%,16%)] text-gray-100 hover:bg-[hsl(220,15%,18%)] transition-colors focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
         >
           {uniqueStates.map((state) => (
             <option key={state} value={state}>
@@ -195,7 +197,7 @@ export default function ComplianceFilters({ filters, setFilters }) {
                   : e.target.value,
             })
           }
-          className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md bg-white"
+          className="w-full px-3 py-2 text-sm border border-[hsl(220,15%,22%)] rounded-lg bg-[hsl(220,15%,16%)] text-gray-100 hover:bg-[hsl(220,15%,18%)] transition-colors focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
         >
           {uniqueDeptWorkGroups.map((dept) => (
             <option key={dept} value={dept}>
@@ -220,7 +222,7 @@ export default function ComplianceFilters({ filters, setFilters }) {
                 e.target.value === "Expires Within..." ? "all" : e.target.value,
             })
           }
-          className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md bg-white"
+          className="w-full px-3 py-2 text-sm border border-[hsl(220,15%,22%)] rounded-lg bg-[hsl(220,15%,16%)] text-gray-100 hover:bg-[hsl(220,15%,18%)] transition-colors focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
         >
           {expiresOptions.map((option) => (
             <option key={option} value={option}>
@@ -231,45 +233,63 @@ export default function ComplianceFilters({ filters, setFilters }) {
       </div>
 
       {/* Employee Selection */}
-      <div className="border-t border-gray-200 pt-4">
+      <div className="border-t border-[hsl(220,15%,20%)] pt-4">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-sm font-semibold text-gray-700">Employees</h3>
+          <h3 className="text-sm font-semibold text-gray-300">Employees</h3>
           <div className="flex gap-2 text-xs">
             <button
               onClick={handleSelectAllEmployees}
-              className="text-blue-600 hover:text-blue-700"
+              className="text-orange-500 hover:text-orange-600 transition-colors"
             >
               Select All
             </button>
-            <span className="text-gray-400">|</span>
+            <span className="text-gray-600">|</span>
             <button
               onClick={handleUnselectAllEmployees}
-              className="text-blue-600 hover:text-blue-700"
+              className="text-orange-500 hover:text-orange-600 transition-colors"
             >
               Unselect All
             </button>
           </div>
         </div>
 
-        <div className="space-y-2 max-h-64 overflow-y-auto">
+        <div className="space-y-2 max-h-64 overflow-y-auto pr-2 custom-scrollbar">
           {uniqueEmployees.map((emp) => (
             <label
               key={emp.empNo}
-              className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1 rounded"
+              className="flex items-center gap-2 cursor-pointer hover:bg-[hsl(220,15%,16%)] p-1.5 rounded-lg transition-colors"
             >
               <input
                 type="checkbox"
                 checked={filters.selectedEmployees.includes(emp.empNo)}
                 onChange={() => handleEmployeeToggle(emp.empNo)}
-                className="rounded border-gray-300"
+                className="w-4 h-4 rounded border-[hsl(220,15%,22%)] bg-[hsl(220,15%,18%)] text-orange-600 focus:ring-orange-500"
               />
-              <span className="text-sm text-gray-700">
+              <span className="text-sm text-gray-300">
                 {emp.empNo} - {emp.name}
               </span>
             </label>
           ))}
         </div>
       </div>
+
+      {/* Custom Scrollbar Styles */}
+      <style jsx>{`
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: hsl(220, 15%, 18%);
+          border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: hsl(220, 15%, 30%);
+          border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: hsl(220, 15%, 35%);
+        }
+      `}</style>
     </div>
   );
 }

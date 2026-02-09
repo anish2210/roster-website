@@ -150,11 +150,11 @@ export default function MyRoster() {
   }, 0);
 
   return (
-    <div className="flex flex-col h-screen bg-white">
+    <div className="flex flex-col h-screen bg-[hsl(220,15%,8%)]">
       {/* Top Toolbar */}
-      <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between px-4 py-3 border-b border-gray-200 bg-white gap-3">
+      <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between px-4 py-3 border-b border-[hsl(220,15%,20%)] bg-[hsl(220,15%,12%)] gap-3">
         <div className="flex items-center gap-2">
-          <h1 className="text-lg font-semibold text-gray-800">My Rostered Shifts</h1>
+          <h1 className="text-lg font-semibold text-gray-100">My Rostered Shifts</h1>
         </div>
 
         <div className="flex items-center gap-2">
@@ -164,7 +164,7 @@ export default function MyRoster() {
 
           <button
             onClick={handleToday}
-            className="flex items-center gap-2 px-2 sm:px-3 py-2 border border-gray-300 rounded-md min-w-[150px] sm:min-w-[200px] justify-center hover:bg-gray-50 transition-colors"
+            className="flex items-center gap-2 px-2 sm:px-3 py-2 border border-[hsl(220,15%,22%)] rounded-md min-w-[150px] sm:min-w-[200px] justify-center hover:bg-[hsl(220,15%,18%)] transition-colors text-gray-200"
           >
             <span className="text-xs sm:text-sm font-medium truncate">{dateRange}</span>
             <ChevronDown className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
@@ -196,34 +196,34 @@ export default function MyRoster() {
       {/* Main Content Area */}
       <div className="flex flex-1 overflow-hidden">
         {/* Left Sidebar - Summary */}
-        <div className="w-[120px] sm:w-[185px] border-r border-gray-200 flex flex-col bg-gray-50">
-          <div className="p-3 border-b border-gray-200">
-            <div className="text-sm font-medium text-gray-700">Summary</div>
+        <div className="w-[120px] sm:w-[185px] border-r border-[hsl(220,15%,20%)] flex flex-col bg-[hsl(220,15%,12%)]">
+          <div className="p-3 border-b border-[hsl(220,15%,20%)]">
+            <div className="text-sm font-medium text-gray-300">Summary</div>
           </div>
 
           <div className="flex-1 overflow-y-auto">
-            <div className="p-3 border-b border-gray-200">
+            <div className="p-3 border-b border-[hsl(220,15%,20%)]">
               <div className="flex items-start gap-2">
-                <div className="w-10 h-10 rounded bg-blue-100 border border-blue-300 flex items-center justify-center flex-shrink-0">
-                  <Clock className="h-5 w-5 text-blue-600" />
+                <div className="w-10 h-10 rounded bg-orange-500/20 border border-orange-500/30 flex items-center justify-center flex-shrink-0">
+                  <Clock className="h-5 w-5 text-orange-500" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-gray-700">Total Hours</p>
-                  <div className="flex items-center gap-1 text-xs text-gray-600">
+                  <p className="text-sm font-medium text-gray-300">Total Hours</p>
+                  <div className="flex items-center gap-1 text-xs text-gray-400">
                     <span>{totalHours.toFixed(2)} Hrs</span>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="p-3 border-b border-gray-200">
+            <div className="p-3 border-b border-[hsl(220,15%,20%)]">
               <div className="flex items-start gap-2">
-                <div className="w-10 h-10 rounded bg-green-100 border border-green-300 flex items-center justify-center flex-shrink-0">
-                  <MapPin className="h-5 w-5 text-green-600" />
+                <div className="w-10 h-10 rounded bg-green-500/20 border border-green-500/30 flex items-center justify-center flex-shrink-0">
+                  <MapPin className="h-5 w-5 text-green-500" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-gray-700">Shifts</p>
-                  <div className="flex items-center gap-1 text-xs text-gray-600">
+                  <p className="text-sm font-medium text-gray-300">Shifts</p>
+                  <div className="flex items-center gap-1 text-xs text-gray-400">
                     <span>{shifts.length} Scheduled</span>
                   </div>
                 </div>
@@ -241,19 +241,19 @@ export default function MyRoster() {
           ) : (
             <div className="min-w-max">
               {/* Date Headers */}
-              <div className="flex border-b border-gray-200 sticky top-0 bg-white z-10">
+              <div className="flex border-b border-[hsl(220,15%,20%)] sticky top-0 bg-[hsl(220,15%,14%)] z-10">
                 {dateColumns.map((col, index) => (
                   <div
                     key={index}
-                    className={`w-[120px] sm:w-[140px] px-2 py-3 text-center border-r border-gray-200 ${
-                      col.isToday ? 'bg-blue-50' : ''
+                    className={`w-[120px] sm:w-[140px] px-2 py-3 text-center border-r border-[hsl(220,15%,20%)] ${
+                      col.isToday ? 'bg-orange-500/10' : ''
                     }`}
                   >
                     {col.isToday ? (
-                      <div className="text-sm font-bold text-blue-600">TODAY</div>
+                      <div className="text-sm font-bold text-orange-500">TODAY</div>
                     ) : (
                       <>
-                        <div className="text-xs font-medium text-gray-700">
+                        <div className="text-xs font-medium text-gray-300">
                           {col.dayName}
                         </div>
                         <div className="text-xs text-gray-500">
@@ -272,8 +272,8 @@ export default function MyRoster() {
                   return (
                     <div
                       key={index}
-                      className={`w-[120px] sm:w-[140px] border-r border-gray-200 p-1 ${
-                        col.isToday ? 'bg-blue-50/30' : 'bg-white'
+                      className={`w-[120px] sm:w-[140px] border-r border-[hsl(220,15%,20%)] p-1 ${
+                        col.isToday ? 'bg-orange-500/5' : 'bg-[hsl(220,15%,14%)]'
                       }`}
                     >
                       {dayShifts.length > 0 ? (
@@ -281,17 +281,17 @@ export default function MyRoster() {
                           {dayShifts.map((shift) => (
                             <div
                               key={shift.id}
-                              className="border border-gray-200 rounded overflow-hidden bg-white text-xs"
+                              className="border border-[hsl(220,15%,22%)] rounded overflow-hidden bg-[hsl(220,15%,16%)] text-xs"
                             >
                               <div className="px-2 py-1">
-                                <div className="font-medium text-gray-900">
+                                <div className="font-medium text-gray-100">
                                   {formatTime(shift.startTime)} - {formatTime(shift.endTime)}
                                 </div>
-                                <div className="text-gray-600">
+                                <div className="text-gray-400">
                                   ({calculateDuration(shift.startTime, shift.endTime)} Hrs)
                                 </div>
                                 {shift.site && (
-                                  <div className="text-gray-600 flex items-center gap-1 mt-0.5">
+                                  <div className="text-gray-400 flex items-center gap-1 mt-0.5">
                                     <MapPin className="h-3 w-3" />
                                     <span className="truncate">{shift.site.shortName}</span>
                                   </div>
@@ -304,7 +304,7 @@ export default function MyRoster() {
                           ))}
                         </div>
                       ) : (
-                        <div className="h-full flex items-center justify-center text-gray-300 text-xs">
+                        <div className="h-full flex items-center justify-center text-gray-600 text-xs">
                           -
                         </div>
                       )}
@@ -318,15 +318,15 @@ export default function MyRoster() {
       </div>
 
       {/* Bottom Status Bar */}
-      <div className="border-t border-gray-200 bg-gray-50 px-4 py-2">
+      <div className="border-t border-[hsl(220,15%,20%)] bg-[hsl(220,15%,12%)] px-4 py-2">
         <div className="flex items-center gap-6 text-xs">
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 rounded-full bg-green-500" />
-            <span className="text-gray-700">{shifts.length} Confirmed Shifts</span>
+            <span className="text-gray-300">{shifts.length} Confirmed Shifts</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full bg-blue-500" />
-            <span className="text-gray-700">{totalHours.toFixed(2)} Total Hours</span>
+            <div className="w-3 h-3 rounded-full bg-orange-500" />
+            <span className="text-gray-300">{totalHours.toFixed(2)} Total Hours</span>
           </div>
         </div>
       </div>

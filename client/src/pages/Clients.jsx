@@ -4,22 +4,22 @@ import ClientFilters from "../components/clients/ClientFilters";
 
 export default function Clients() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen">
       {/* Clients Submenu Bar */}
-      <div className="bg-blue-600 text-white px-4 sm:px-6 py-3">
+      <div className="bg-orange-600 text-white px-4 sm:px-6 py-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Building2 className="w-5 h-5" />
             <h1 className="text-base sm:text-lg font-semibold">Clients</h1>
           </div>
           <div className="flex items-center gap-1 sm:gap-2">
-            <button className="p-1.5 sm:p-2 hover:bg-blue-700 rounded transition-colors" title="Settings">
+            <button className="p-1.5 sm:p-2 hover:bg-orange-700 rounded transition-colors" title="Settings">
               <Settings className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
-            <button className="p-1.5 sm:p-2 hover:bg-blue-700 rounded transition-colors" title="Expand">
+            <button className="p-1.5 sm:p-2 hover:bg-orange-700 rounded transition-colors" title="Expand">
               <Maximize className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
-            <button className="p-1.5 sm:p-2 hover:bg-blue-700 rounded transition-colors" title="Refresh">
+            <button className="p-1.5 sm:p-2 hover:bg-orange-700 rounded transition-colors" title="Refresh">
               <RotateCw className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
           </div>
@@ -37,7 +37,7 @@ export default function Clients() {
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-4 sm:mb-6">
           {/* Primary Actions */}
           <div className="flex flex-wrap items-center gap-2">
-            <button className="px-3 sm:px-4 py-2 bg-pink-500 text-white rounded-md hover:bg-pink-600 transition-colors flex items-center gap-2 text-sm font-medium">
+            <button className="px-3 sm:px-4 py-2 bg-orange-600 text-white rounded-md hover:bg-orange-700 transition-colors flex items-center gap-2 text-sm font-medium">
               <Plus className="w-4 h-4" />
               <span className="hidden sm:inline">Add New</span>
               <span className="sm:hidden">Add</span>
@@ -46,15 +46,15 @@ export default function Clients() {
 
           {/* Secondary Actions */}
           <div className="flex flex-wrap items-center gap-2">
-            <button className="px-3 sm:px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors flex items-center gap-2 text-sm">
+            <button className="px-3 sm:px-4 py-2 bg-[hsl(220,15%,14%)] border border-[hsl(220,15%,22%)] text-gray-300 rounded-md hover:bg-[hsl(220,15%,18%)] transition-colors flex items-center gap-2 text-sm">
               Actions
               <ChevronDown className="w-4 h-4" />
             </button>
-            <button className="px-3 sm:px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors flex items-center gap-2 text-sm">
+            <button className="px-3 sm:px-4 py-2 bg-[hsl(220,15%,14%)] border border-[hsl(220,15%,22%)] text-gray-300 rounded-md hover:bg-[hsl(220,15%,18%)] transition-colors flex items-center gap-2 text-sm">
               Columns
               <ChevronDown className="w-4 h-4" />
             </button>
-            <select className="px-3 sm:px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-md text-sm cursor-pointer">
+            <select className="px-3 sm:px-4 py-2 bg-[hsl(220,15%,14%)] border border-[hsl(220,15%,22%)] text-gray-300 rounded-md text-sm cursor-pointer">
               <option>25</option>
               <option>50</option>
               <option>100</option>

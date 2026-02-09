@@ -89,18 +89,18 @@ export default function Sidebar({ isOpen, onClose }) {
           isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         } ${
           isOpen ? "w-64" : "lg:w-20 w-64"
-        } bg-white border-r border-gray-200 h-screen fixed lg:sticky top-0 flex flex-col shadow-sm transition-all duration-300 z-50`}
+        } bg-[hsl(220,15%,12%)] border-r border-[hsl(220,15%,20%)] h-screen fixed lg:sticky top-0 flex flex-col shadow-lg transition-all duration-300 z-50`}
       >
         {/* Logo/Brand */}
-        <div className="p-6 border-b border-gray-200">
+        <div className="p-6 border-b border-[hsl(220,15%,20%)]">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-md flex-shrink-0">
+            <div className="w-10 h-10 bg-gradient-to-br from-orange-600 to-orange-700 rounded-xl flex items-center justify-center shadow-md flex-shrink-0">
               <span className="text-white font-bold text-lg">R</span>
             </div>
             {(isOpen || window.innerWidth >= 1024) && (
               <div className={isOpen ? "block" : "hidden lg:hidden"}>
-                <h1 className="text-lg font-bold text-gray-800">ROSTER</h1>
-                <p className="text-xs text-gray-500">Mechanic</p>
+                <h1 className="text-lg font-bold text-gray-100">ROSTER</h1>
+                <p className="text-xs text-gray-400">Mechanic</p>
               </div>
             )}
           </div>
@@ -119,11 +119,11 @@ export default function Sidebar({ isOpen, onClose }) {
                     onClick={item.toggle}
                     className={`w-full flex items-center ${
                       isOpen ? "justify-between px-4" : "justify-center px-2"
-                    } py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-xl transition-colors`}
+                    } py-3 text-sm font-medium text-gray-300 hover:bg-[hsl(220,15%,18%)] rounded-xl transition-colors`}
                     title={!isOpen ? item.label : ""}
                   >
                     <div className="flex items-center gap-3">
-                      <Icon className="w-5 h-5 text-gray-600 flex-shrink-0" />
+                      <Icon className="w-5 h-5 text-gray-400 flex-shrink-0" />
                       {isOpen && <span>{item.label}</span>}
                     </div>
                     {isOpen && (
@@ -144,8 +144,8 @@ export default function Sidebar({ isOpen, onClose }) {
                             className={({ isActive }) =>
                               `block px-4 py-2 text-sm rounded-lg transition-colors ${
                                 isActive
-                                  ? "bg-blue-50 text-blue-600 font-medium"
-                                  : "text-gray-600 hover:bg-gray-50"
+                                  ? "bg-orange-600/20 text-orange-500 font-medium"
+                                  : "text-gray-400 hover:bg-[hsl(220,15%,18%)]"
                               }`
                             }
                           >
@@ -169,8 +169,8 @@ export default function Sidebar({ isOpen, onClose }) {
                       isOpen ? "px-4" : "lg:px-2 px-4 lg:justify-center"
                     } py-3 text-sm font-medium rounded-xl transition-colors ${
                       isActive
-                        ? "bg-blue-500 text-white shadow-md"
-                        : "text-gray-700 hover:bg-gray-50"
+                        ? "bg-orange-600 text-white shadow-md"
+                        : "text-gray-300 hover:bg-[hsl(220,15%,18%)]"
                     }`
                   }
                   title={!isOpen ? item.label : ""}

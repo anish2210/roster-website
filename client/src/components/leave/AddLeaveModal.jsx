@@ -63,7 +63,7 @@ export default function AddLeaveModal({ open, onClose }) {
     >
       <div
         ref={modalRef}
-        className="fixed bg-white rounded-lg shadow-xl w-full max-w-5xl"
+        className="fixed bg-[hsl(220,15%,14%)] rounded-lg shadow-xl w-full max-w-5xl border border-[hsl(220,15%,20%)]"
         style={{
           left: `calc(50% + ${position.x}px)`,
           top: `calc(50% + ${position.y}px)`,
@@ -73,24 +73,24 @@ export default function AddLeaveModal({ open, onClose }) {
       >
         {/* Modal Header */}
         <div
-          className="modal-header flex items-center justify-between px-6 py-4 border-b border-gray-200 cursor-grab active:cursor-grabbing"
+          className="modal-header flex items-center justify-between px-6 py-4 border-b border-[hsl(220,15%,20%)] cursor-grab active:cursor-grabbing"
           onMouseDown={handleMouseDown}
         >
-          <h2 className="text-lg font-semibold text-gray-900">
+          <h2 className="text-lg font-semibold text-gray-100">
             New Leave Request
           </h2>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 transition-colors"
+            className="text-gray-400 hover:text-gray-200 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Tabs */}
-        <div className="border-b border-gray-200">
+        <div className="border-b border-[hsl(220,15%,20%)]">
           <div className="px-6">
-            <button className="px-4 py-3 text-sm font-medium text-gray-700 border-b-2 border-blue-600">
+            <button className="px-4 py-3 text-sm font-medium text-gray-100 border-b-2 border-orange-500">
               Leave Request
             </button>
           </div>
@@ -189,7 +189,7 @@ export default function AddLeaveModal({ open, onClose }) {
 
               <div className="flex items-center gap-2">
                 <Label>Leave Days</Label>
-                <span className="text-sm text-gray-600">
+                <span className="text-sm text-gray-400">
                   {formData.leaveDays} Day(s)
                 </span>
               </div>
@@ -198,7 +198,7 @@ export default function AddLeaveModal({ open, onClose }) {
             {/* Apply Leave Category */}
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <button className="text-blue-600 hover:text-blue-700">
+                <button className="text-orange-500 hover:text-orange-400">
                   <svg
                     className="w-4 h-4"
                     fill="none"
@@ -230,23 +230,23 @@ export default function AddLeaveModal({ open, onClose }) {
             </div>
 
             {/* Leave Breakdown */}
-            <div className="border border-gray-200 rounded-lg">
+            <div className="border border-[hsl(220,15%,20%)] rounded-lg">
               <button
                 onClick={() => setShowBreakdown(!showBreakdown)}
-                className="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-gray-50"
+                className="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-[hsl(220,15%,18%)]"
               >
-                <span className="text-sm font-medium text-blue-600">
+                <span className="text-sm font-medium text-orange-500">
                   Leave Breakdown
                 </span>
                 <ChevronDown
-                  className={`w-4 h-4 text-blue-600 transition-transform ${
+                  className={`w-4 h-4 text-orange-500 transition-transform ${
                     showBreakdown ? "rotate-180" : ""
                   }`}
                 />
               </button>
               {showBreakdown && (
-                <div className="px-4 py-3 border-t border-gray-200">
-                  <p className="text-sm text-gray-600">
+                <div className="px-4 py-3 border-t border-[hsl(220,15%,20%)]">
+                  <p className="text-sm text-gray-400">
                     Leave breakdown details will appear here
                   </p>
                 </div>
@@ -270,23 +270,23 @@ export default function AddLeaveModal({ open, onClose }) {
         </div>
 
         {/* Modal Footer */}
-        <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-end gap-2">
+        <div className="px-6 py-4 border-t border-[hsl(220,15%,20%)] flex items-center justify-end gap-2">
           <Button
             variant="outline"
             onClick={onClose}
-            className="text-gray-700"
+            className="text-gray-300 border-[hsl(220,15%,25%)] hover:bg-[hsl(220,15%,18%)]"
           >
             Cancel
           </Button>
           <Button
             onClick={() => handleSubmit(false)}
-            className="bg-blue-600 hover:bg-blue-700 text-white"
+            className="bg-orange-600 hover:bg-orange-700 text-white"
           >
             Save
           </Button>
           <Button
             onClick={() => handleSubmit(true)}
-            className="bg-blue-600 hover:bg-blue-700 text-white"
+            className="bg-orange-600 hover:bg-orange-700 text-white"
           >
             Save And Approve
           </Button>

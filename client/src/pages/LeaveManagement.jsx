@@ -32,23 +32,23 @@ export default function LeaveManagement() {
   const leaveRequests = [];
 
   return (
-    <div className="flex h-[calc(100vh-56px)] bg-gray-50">
+    <div className="flex h-[calc(100vh-56px)]">
       {/* Left Sidebar - Filters */}
-      <div className="w-64 bg-white border-r border-gray-200 overflow-y-auto flex-shrink-0">
+      <div className="w-64 bg-[hsl(220,15%,12%)] border-r border-[hsl(220,15%,20%)] overflow-y-auto flex-shrink-0">
         <LeaveFilters filters={filters} setFilters={setFilters} />
       </div>
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Stats Section */}
-        <div className="p-4 bg-white border-b border-gray-200">
+        <div className="p-4 bg-[hsl(220,15%,14%)] border-b border-[hsl(220,15%,20%)]">
           <LeaveStats stats={stats} />
 
           {/* Search and Actions Bar */}
           <div className="flex items-center justify-between gap-4 mt-4">
             {/* Search */}
             <div className="relative flex-1 max-w-md">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500" />
               <Input
                 type="text"
                 placeholder="Search..."
@@ -62,18 +62,18 @@ export default function LeaveManagement() {
             <div className="flex items-center gap-2">
               <Button
                 onClick={() => setShowAddModal(true)}
-                className="bg-red-600 hover:bg-red-700 text-white flex items-center gap-2"
+                className="bg-orange-600 hover:bg-orange-700 text-white flex items-center gap-2"
               >
                 <Plus className="w-4 h-4" />
                 Add New Leave
               </Button>
 
-              <button className="p-2 hover:bg-gray-100 rounded transition-colors">
-                <RotateCcw className="w-4 h-4 text-gray-600" />
+              <button className="p-2 hover:bg-[hsl(220,15%,18%)] rounded transition-colors">
+                <RotateCcw className="w-4 h-4 text-gray-400" />
               </button>
 
               <div className="flex items-center gap-2">
-                <button className="p-2 hover:bg-gray-100 rounded transition-colors flex items-center gap-1 text-sm text-gray-700">
+                <button className="p-2 hover:bg-[hsl(220,15%,18%)] rounded transition-colors flex items-center gap-1 text-sm text-gray-300">
                   <Settings2 className="w-4 h-4" />
                   Columns
                 </button>
@@ -103,7 +103,6 @@ export default function LeaveManagement() {
               variant="outline"
               size="sm"
               disabled={true}
-              className="text-gray-700"
             >
               Previous
             </Button>
@@ -111,7 +110,6 @@ export default function LeaveManagement() {
               variant="outline"
               size="sm"
               disabled={true}
-              className="text-gray-700"
             >
               Next
             </Button>

@@ -12,26 +12,26 @@ export default function LeaveFilters({ filters, setFilters }) {
   };
 
   return (
-    <div className="bg-gray-50 p-4 space-y-4">
+    <div className="bg-[hsl(220,15%,12%)] p-4 space-y-4">
       {/* Clear Filters Header */}
-      <div className="flex items-center justify-between pb-3 border-b border-gray-200">
+      <div className="flex items-center justify-between pb-3 border-b border-[hsl(220,15%,20%)]">
         <button
           onClick={handleClearFilters}
-          className="flex items-center gap-1 text-blue-600 hover:text-blue-700 text-sm font-medium"
+          className="flex items-center gap-1 text-orange-500 hover:text-orange-400 text-sm font-medium"
         >
           <X className="w-4 h-4" />
           Clear Filters
         </button>
-        <X className="w-4 h-4 text-blue-600" />
+        <X className="w-4 h-4 text-orange-500" />
       </div>
 
       {/* Select Leave Period */}
       <div className="space-y-2">
-        <label className="text-sm font-medium text-gray-700">
+        <label className="text-sm font-medium text-gray-300">
           Select Leave Period
         </label>
         <div className="flex items-center gap-2">
-          <button className="p-1 hover:bg-gray-200 rounded">
+          <button className="p-1 hover:bg-[hsl(220,15%,18%)] rounded text-gray-400">
             <ChevronLeft className="w-4 h-4" />
           </button>
           <Select
@@ -47,7 +47,7 @@ export default function LeaveFilters({ filters, setFilters }) {
             <option value="last_6_months">Last 6 Months</option>
             <option value="this_year">This Year</option>
           </Select>
-          <button className="p-1 hover:bg-gray-200 rounded">
+          <button className="p-1 hover:bg-[hsl(220,15%,18%)] rounded text-gray-400">
             <ChevronRight className="w-4 h-4" />
           </button>
         </div>
@@ -85,7 +85,7 @@ export default function LeaveFilters({ filters, setFilters }) {
 
       {/* Search Button */}
       <Button
-        className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+        className="w-full bg-orange-600 hover:bg-orange-700 text-white"
         variant="default"
       >
         Search

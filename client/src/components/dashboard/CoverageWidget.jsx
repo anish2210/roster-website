@@ -35,7 +35,7 @@ export default function CoverageWidget() {
             cx={size / 2}
             cy={size / 2}
             r={radius}
-            stroke="#e5e7eb"
+            stroke="hsl(220, 15%, 20%)"
             strokeWidth="8"
             fill="none"
           />
@@ -43,7 +43,7 @@ export default function CoverageWidget() {
             cx={size / 2}
             cy={size / 2}
             r={radius}
-            stroke="#3b82f6"
+            stroke="#EA580C"
             strokeWidth="8"
             fill="none"
             strokeDasharray={circumference}
@@ -52,7 +52,7 @@ export default function CoverageWidget() {
           />
         </svg>
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-2xl font-bold text-gray-900">{percentage}%</span>
+          <span className="text-2xl font-bold text-gray-100">{percentage}%</span>
         </div>
       </div>
     );
@@ -61,8 +61,8 @@ export default function CoverageWidget() {
   return (
     <div className="grid grid-cols-1 gap-6">
       {/* Coverage Section */}
-      <div className="bg-white border border-gray-100 rounded-3xl p-6 shadow-sm hover:shadow-md transition-all">
-        <h3 className="text-lg font-bold mb-5 text-gray-800">
+      <div className="bg-[hsl(220,15%,14%)] border border-[hsl(220,15%,20%)] rounded-3xl p-6 shadow-lg hover:shadow-xl transition-all">
+        <h3 className="text-lg font-bold mb-5 text-gray-100">
           Coverage Analytics
         </h3>
 
@@ -71,20 +71,20 @@ export default function CoverageWidget() {
           <div className="flex-1">
             <table className="w-full text-sm">
               <tbody>
-                <tr className="border-b border-gray-200">
-                  <td className="py-2 text-gray-700">Coverage HRS</td>
-                  <td className="py-2 text-right font-medium">{coverageData.coverageHRS}</td>
-                  <td className="py-2 text-right font-medium">{coverageData.coverageShifts}</td>
+                <tr className="border-b border-[hsl(220,15%,22%)]">
+                  <td className="py-2 text-gray-300">Coverage HRS</td>
+                  <td className="py-2 text-right font-medium text-gray-200">{coverageData.coverageHRS}</td>
+                  <td className="py-2 text-right font-medium text-gray-200">{coverageData.coverageShifts}</td>
                 </tr>
-                <tr className="border-b border-gray-200">
-                  <td className="py-2 text-gray-700">Actual HRS</td>
-                  <td className="py-2 text-right font-medium">{coverageData.actualHRS}</td>
-                  <td className="py-2 text-right font-medium">{coverageData.actualShifts}</td>
+                <tr className="border-b border-[hsl(220,15%,22%)]">
+                  <td className="py-2 text-gray-300">Actual HRS</td>
+                  <td className="py-2 text-right font-medium text-gray-200">{coverageData.actualHRS}</td>
+                  <td className="py-2 text-right font-medium text-gray-200">{coverageData.actualShifts}</td>
                 </tr>
                 <tr>
-                  <td className="py-2 text-gray-700 font-semibold">Difference</td>
-                  <td className="py-2 text-right font-semibold">{coverageData.differenceHRS}</td>
-                  <td className="py-2 text-right font-semibold">{coverageData.differenceShifts}</td>
+                  <td className="py-2 text-gray-200 font-semibold">Difference</td>
+                  <td className="py-2 text-right font-semibold text-gray-100">{coverageData.differenceHRS}</td>
+                  <td className="py-2 text-right font-semibold text-gray-100">{coverageData.differenceShifts}</td>
                 </tr>
                 <tr>
                   <td colSpan="3" className="py-1 text-right text-gray-500 text-xs">
@@ -98,8 +98,8 @@ export default function CoverageWidget() {
       </div>
 
       {/* Roster Section */}
-      <div className="bg-white border border-gray-100 rounded-3xl p-6 shadow-sm hover:shadow-md transition-all">
-        <h3 className="text-lg font-bold mb-5 text-gray-800">
+      <div className="bg-[hsl(220,15%,14%)] border border-[hsl(220,15%,20%)] rounded-3xl p-6 shadow-lg hover:shadow-xl transition-all">
+        <h3 className="text-lg font-bold mb-5 text-gray-100">
           Roster Analytics
         </h3>
 
@@ -108,20 +108,20 @@ export default function CoverageWidget() {
           <div className="flex-1">
             <table className="w-full text-sm">
               <tbody>
-                <tr className="border-b border-gray-200">
-                  <td className="py-2 text-gray-700">Roster HRS</td>
-                  <td className="py-2 text-right font-medium">{rosterData.rosterHRS}</td>
-                  <td className="py-2 text-right font-medium">{rosterData.rosterShifts}</td>
+                <tr className="border-b border-[hsl(220,15%,22%)]">
+                  <td className="py-2 text-gray-300">Roster HRS</td>
+                  <td className="py-2 text-right font-medium text-gray-200">{rosterData.rosterHRS}</td>
+                  <td className="py-2 text-right font-medium text-gray-200">{rosterData.rosterShifts}</td>
                 </tr>
-                <tr className="border-b border-gray-200">
-                  <td className="py-2 text-gray-700">Actual HRS</td>
-                  <td className="py-2 text-right font-medium">{rosterData.actualHRS}</td>
-                  <td className="py-2 text-right font-medium">{rosterData.actualShifts}</td>
+                <tr className="border-b border-[hsl(220,15%,22%)]">
+                  <td className="py-2 text-gray-300">Actual HRS</td>
+                  <td className="py-2 text-right font-medium text-gray-200">{rosterData.actualHRS}</td>
+                  <td className="py-2 text-right font-medium text-gray-200">{rosterData.actualShifts}</td>
                 </tr>
                 <tr>
-                  <td className="py-2 text-gray-700 font-semibold">Difference</td>
-                  <td className="py-2 text-right font-semibold">{rosterData.differenceHRS}</td>
-                  <td className="py-2 text-right font-semibold">{rosterData.differenceShifts}</td>
+                  <td className="py-2 text-gray-200 font-semibold">Difference</td>
+                  <td className="py-2 text-right font-semibold text-gray-100">{rosterData.differenceHRS}</td>
+                  <td className="py-2 text-right font-semibold text-gray-100">{rosterData.differenceShifts}</td>
                 </tr>
                 <tr>
                   <td colSpan="3" className="py-1 text-right text-gray-500 text-xs">

@@ -53,9 +53,9 @@ export default function TimeAttendance() {
   };
 
   return (
-    <div className="flex h-[calc(100vh-56px)] bg-gray-50">
+    <div className="flex h-[calc(100vh-56px)]">
       {/* Left Sidebar - Filters */}
-      <div className="w-64 bg-white border-r border-gray-200 overflow-y-auto flex-shrink-0">
+      <div className="w-64 bg-[hsl(220,15%,12%)] border-r border-[hsl(220,15%,20%)] overflow-y-auto flex-shrink-0">
         <AttendanceFilters
           filters={filters}
           setFilters={setFilters}
@@ -66,7 +66,7 @@ export default function TimeAttendance() {
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Tabs */}
-        <div className="bg-white border-b border-gray-200">
+        <div className="bg-[hsl(220,15%,14%)] border-b border-[hsl(220,15%,20%)]">
           <div className="flex items-center gap-2 px-4">
             {tabs.map((tab) => {
               const Icon = tab.icon;
@@ -76,8 +76,8 @@ export default function TimeAttendance() {
                   onClick={() => setActiveTab(tab.id)}
                   className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
                     activeTab === tab.id
-                      ? "border-blue-600 text-blue-600"
-                      : "border-transparent text-gray-600 hover:text-gray-900"
+                      ? "border-orange-500 text-orange-500"
+                      : "border-transparent text-gray-400 hover:text-gray-200"
                   }`}
                 >
                   <Icon className="w-4 h-4" />
@@ -89,9 +89,9 @@ export default function TimeAttendance() {
         </div>
 
         {/* Action Bar */}
-        <div className="bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between gap-4">
+        <div className="bg-[hsl(220,15%,14%)] border-b border-[hsl(220,15%,20%)] px-4 py-3 flex items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <Button className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2">
+            <Button className="bg-orange-600 hover:bg-orange-700 text-white flex items-center gap-2">
               <Plus className="w-4 h-4" />
               New Time Record
             </Button>
@@ -104,25 +104,25 @@ export default function TimeAttendance() {
           </div>
 
           <div className="flex items-center gap-2">
-            <button className="p-2 hover:bg-gray-100 rounded transition-colors">
-              <Mail className="w-4 h-4 text-gray-600" />
+            <button className="p-2 hover:bg-[hsl(220,15%,18%)] rounded transition-colors">
+              <Mail className="w-4 h-4 text-gray-400" />
             </button>
-            <button className="p-2 hover:bg-gray-100 rounded transition-colors">
-              <Printer className="w-4 h-4 text-gray-600" />
+            <button className="p-2 hover:bg-[hsl(220,15%,18%)] rounded transition-colors">
+              <Printer className="w-4 h-4 text-gray-400" />
             </button>
-            <button className="p-2 hover:bg-gray-100 rounded transition-colors">
-              <Download className="w-4 h-4 text-gray-600" />
+            <button className="p-2 hover:bg-[hsl(220,15%,18%)] rounded transition-colors">
+              <Download className="w-4 h-4 text-gray-400" />
             </button>
-            <button className="p-2 hover:bg-gray-100 rounded transition-colors">
-              <RotateCw className="w-4 h-4 text-gray-600" />
+            <button className="p-2 hover:bg-[hsl(220,15%,18%)] rounded transition-colors">
+              <RotateCw className="w-4 h-4 text-gray-400" />
             </button>
-            <button className="p-2 hover:bg-gray-100 rounded transition-colors flex items-center gap-1 text-sm text-gray-700">
+            <button className="p-2 hover:bg-[hsl(220,15%,18%)] rounded transition-colors flex items-center gap-1 text-sm text-gray-300">
               Actions
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </button>
-            <button className="p-2 hover:bg-gray-100 rounded transition-colors flex items-center gap-1 text-sm text-gray-700">
+            <button className="p-2 hover:bg-[hsl(220,15%,18%)] rounded transition-colors flex items-center gap-1 text-sm text-gray-300">
               <Settings2 className="w-4 h-4" />
               Columns
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -144,39 +144,39 @@ export default function TimeAttendance() {
 
         {/* Table */}
         <div className="flex-1 overflow-auto">
-          <div className="bg-white m-4 rounded-lg border border-gray-200 overflow-hidden">
+          <div className="bg-[hsl(220,15%,14%)] m-4 rounded-lg border border-[hsl(220,15%,20%)] overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-gray-50 border-b border-gray-200">
+                <thead className="bg-[hsl(220,15%,16%)] border-b border-[hsl(220,15%,22%)]">
                   <tr>
-                    <th className="px-4 py-3 border-r border-gray-200">
-                      <input type="checkbox" className="rounded border-gray-300" />
+                    <th className="px-4 py-3 border-r border-[hsl(220,15%,22%)]">
+                      <input type="checkbox" className="rounded border-gray-600" />
                     </th>
                     <th
-                      className="px-4 py-3 text-center text-xs font-medium text-gray-700 uppercase tracking-wider border-r border-gray-200"
+                      className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider border-r border-[hsl(220,15%,22%)]"
                       colSpan="5"
                     >
                       Shift Assignments
                     </th>
                     <th
-                      className="px-4 py-3 text-center text-xs font-medium text-gray-700 uppercase tracking-wider"
+                      className="px-4 py-3 text-center text-xs font-medium text-gray-300 uppercase tracking-wider"
                       colSpan="4"
                     >
                       Clocked Record
                     </th>
                     <th className="px-4 py-3" colSpan="3"></th>
                   </tr>
-                  <tr className="bg-gray-100">
+                  <tr className="bg-[hsl(220,15%,18%)]">
                     <th className="px-4 py-3"></th>
                     {columns.map((column, index) => (
                       <th
                         key={index}
-                        className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider whitespace-nowrap"
+                        className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider whitespace-nowrap"
                       >
                         <div className="flex items-center gap-1">
                           {column.label}
                           {column.sortable && (
-                            <button className="hover:bg-gray-200 rounded p-0.5">
+                            <button className="hover:bg-[hsl(220,15%,22%)] rounded p-0.5">
                               <svg
                                 className="w-3 h-3"
                                 fill="none"
@@ -211,9 +211,9 @@ export default function TimeAttendance() {
             </div>
 
             {/* Footer with Stats */}
-            <div className="border-t border-gray-200 bg-gray-50">
+            <div className="border-t border-[hsl(220,15%,22%)] bg-[hsl(220,15%,16%)]">
               <div className="px-4 py-3 flex items-center justify-between">
-                <div className="text-sm text-red-600 italic">
+                <div className="text-sm text-gray-400 italic">
                   Showing 0 to 0 of 0 entries
                 </div>
                 <div className="flex items-center gap-2">
@@ -227,26 +227,26 @@ export default function TimeAttendance() {
               </div>
 
               {/* Stats Row */}
-              <div className="border-t border-gray-200 px-4 py-3 flex items-center justify-around text-sm">
+              <div className="border-t border-[hsl(220,15%,22%)] px-4 py-3 flex items-center justify-around text-sm">
                 <div className="flex flex-col items-center">
-                  <span className="text-gray-600">Total HRS</span>
-                  <span className="font-semibold text-gray-900">{stats.total.toFixed(2)}</span>
+                  <span className="text-gray-400">Total HRS</span>
+                  <span className="font-semibold text-gray-100">{stats.total.toFixed(2)}</span>
                 </div>
                 <div className="flex flex-col items-center">
-                  <span className="text-gray-600">Approved</span>
-                  <span className="font-semibold text-gray-900">{stats.approved.toFixed(2)}</span>
+                  <span className="text-gray-400">Approved</span>
+                  <span className="font-semibold text-gray-100">{stats.approved.toFixed(2)}</span>
                 </div>
                 <div className="flex flex-col items-center">
-                  <span className="text-gray-600">Rejected</span>
-                  <span className="font-semibold text-gray-900">{stats.rejected.toFixed(2)}</span>
+                  <span className="text-gray-400">Rejected</span>
+                  <span className="font-semibold text-gray-100">{stats.rejected.toFixed(2)}</span>
                 </div>
                 <div className="flex flex-col items-center">
-                  <span className="text-gray-600">Pending</span>
-                  <span className="font-semibold text-gray-900">{stats.pending.toFixed(2)}</span>
+                  <span className="text-gray-400">Pending</span>
+                  <span className="font-semibold text-gray-100">{stats.pending.toFixed(2)}</span>
                 </div>
                 <div className="flex flex-col items-center">
-                  <span className="text-gray-600">Void</span>
-                  <span className="font-semibold text-gray-900">{stats.void.toFixed(2)}</span>
+                  <span className="text-gray-400">Void</span>
+                  <span className="font-semibold text-gray-100">{stats.void.toFixed(2)}</span>
                 </div>
               </div>
             </div>

@@ -16,31 +16,29 @@ export default function AttendanceFilters({ filters, setFilters, onSearch }) {
   };
 
   return (
-    <div className="bg-gray-50 p-4 space-y-4">
+    <div className="bg-[hsl(220,15%,14%)] p-4 space-y-4">
       {/* Clear Filters Header */}
-      <div className="flex items-center justify-between pb-3 border-b border-gray-200">
+      <div className="flex items-center justify-between pb-3 border-b border-[hsl(220,15%,20%)]">
         <button
           onClick={handleClearFilters}
-          className="flex items-center gap-1 text-blue-600 hover:text-blue-700 text-sm font-medium"
+          className="flex items-center gap-1 text-orange-500 hover:text-orange-600 text-sm font-medium"
         >
           <X className="w-4 h-4" />
           Clear Filters
         </button>
-        <X className="w-4 h-4 text-blue-600" />
+        <X className="w-4 h-4 text-orange-500" />
       </div>
 
       {/* Date Selector */}
       <div className="space-y-2">
         <div className="flex items-center gap-2">
-          <button className="p-1 hover:bg-gray-200 rounded">
+          <button className="p-1 hover:bg-[hsl(220,15%,18%)] rounded text-gray-300">
             <ChevronLeft className="w-4 h-4" />
           </button>
           <Select
             value={filters.date}
-            onChange={(e) =>
-              setFilters({ ...filters, date: e.target.value })
-            }
-            className="flex-1"
+            onChange={(e) => setFilters({ ...filters, date: e.target.value })}
+            className="flex-1 bg-[hsl(220,15%,16%)] border-[hsl(220,15%,22%)] text-gray-100"
           >
             <option value="today">Today</option>
             <option value="yesterday">Yesterday</option>
@@ -48,7 +46,7 @@ export default function AttendanceFilters({ filters, setFilters, onSearch }) {
             <option value="last_week">Last Week</option>
             <option value="this_month">This Month</option>
           </Select>
-          <button className="p-1 hover:bg-gray-200 rounded">
+          <button className="p-1 hover:bg-[hsl(220,15%,18%)] rounded text-gray-300">
             <ChevronRight className="w-4 h-4" />
           </button>
         </div>
@@ -61,6 +59,7 @@ export default function AttendanceFilters({ filters, setFilters, onSearch }) {
           onChange={(e) =>
             setFilters({ ...filters, contractors: e.target.value })
           }
+          className="bg-[hsl(220,15%,16%)] border-[hsl(220,15%,22%)] text-gray-100"
         >
           <option value="all">All Contractors</option>
           <option value="internal">Internal Team/Staff</option>
@@ -72,9 +71,8 @@ export default function AttendanceFilters({ filters, setFilters, onSearch }) {
       <div className="space-y-2">
         <Select
           value={filters.states}
-          onChange={(e) =>
-            setFilters({ ...filters, states: e.target.value })
-          }
+          onChange={(e) => setFilters({ ...filters, states: e.target.value })}
+          className="bg-[hsl(220,15%,16%)] border-[hsl(220,15%,22%)] text-gray-100"
         >
           <option value="all">All States</option>
           <option value="active">Active</option>
@@ -86,9 +84,8 @@ export default function AttendanceFilters({ filters, setFilters, onSearch }) {
       <div className="space-y-2">
         <Select
           value={filters.sites}
-          onChange={(e) =>
-            setFilters({ ...filters, sites: e.target.value })
-          }
+          onChange={(e) => setFilters({ ...filters, sites: e.target.value })}
+          className="bg-[hsl(220,15%,16%)] border-[hsl(220,15%,22%)] text-gray-100"
         >
           <option value="all">All Sites</option>
           <option value="site1">Site 1</option>
@@ -103,6 +100,7 @@ export default function AttendanceFilters({ filters, setFilters, onSearch }) {
           onChange={(e) =>
             setFilters({ ...filters, exceptions: e.target.value })
           }
+          className="bg-[hsl(220,15%,16%)] border-[hsl(220,15%,22%)] text-gray-100"
         >
           <option value="all">All Exceptions</option>
           <option value="late">Late Arrival</option>
@@ -115,9 +113,8 @@ export default function AttendanceFilters({ filters, setFilters, onSearch }) {
       <div className="space-y-2">
         <Select
           value={filters.status}
-          onChange={(e) =>
-            setFilters({ ...filters, status: e.target.value })
-          }
+          onChange={(e) => setFilters({ ...filters, status: e.target.value })}
+          className="bg-[hsl(220,15%,16%)] border-[hsl(220,15%,22%)] text-gray-100"
         >
           <option value="all">All Status</option>
           <option value="approved">Approved</option>
@@ -127,34 +124,34 @@ export default function AttendanceFilters({ filters, setFilters, onSearch }) {
       </div>
 
       {/* Shift Type Tabs */}
-      <div className="border-t border-gray-200 pt-3">
+      <div className="border-t border-[hsl(220,15%,20%)] pt-3">
         <div className="flex gap-1">
           <button
             onClick={() => setFilters({ ...filters, shiftType: "all" })}
-            className={`flex-1 px-3 py-2 text-xs font-medium rounded ${
+            className={`flex-1 px-3 py-2 text-xs font-medium rounded-lg transition-colors ${
               filters.shiftType === "all"
-                ? "bg-blue-600 text-white"
-                : "bg-white text-gray-700 hover:bg-gray-100"
+                ? "bg-orange-600 text-white"
+                : "bg-[hsl(220,15%,16%)] text-gray-300 hover:bg-[hsl(220,15%,18%)] border border-[hsl(220,15%,22%)]"
             }`}
           >
             All Shifts
           </button>
           <button
             onClick={() => setFilters({ ...filters, shiftType: "scheduled" })}
-            className={`flex-1 px-3 py-2 text-xs font-medium rounded ${
+            className={`flex-1 px-3 py-2 text-xs font-medium rounded-lg transition-colors ${
               filters.shiftType === "scheduled"
-                ? "bg-blue-600 text-white"
-                : "bg-white text-gray-700 hover:bg-gray-100"
+                ? "bg-orange-600 text-white"
+                : "bg-[hsl(220,15%,16%)] text-gray-300 hover:bg-[hsl(220,15%,18%)] border border-[hsl(220,15%,22%)]"
             }`}
           >
             Scheduled
           </button>
           <button
             onClick={() => setFilters({ ...filters, shiftType: "adhoc" })}
-            className={`flex-1 px-3 py-2 text-xs font-medium rounded ${
+            className={`flex-1 px-3 py-2 text-xs font-medium rounded-lg transition-colors ${
               filters.shiftType === "adhoc"
-                ? "bg-blue-600 text-white"
-                : "bg-white text-gray-700 hover:bg-gray-100"
+                ? "bg-orange-600 text-white"
+                : "bg-[hsl(220,15%,16%)] text-gray-300 hover:bg-[hsl(220,15%,18%)] border border-[hsl(220,15%,22%)]"
             }`}
           >
             Adhoc
@@ -165,7 +162,7 @@ export default function AttendanceFilters({ filters, setFilters, onSearch }) {
       {/* Search Button */}
       <Button
         onClick={onSearch}
-        className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+        className="w-full bg-orange-600 hover:bg-orange-700 text-white border-orange-600"
         variant="default"
       >
         Search
