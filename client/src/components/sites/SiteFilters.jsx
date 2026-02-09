@@ -1,36 +1,28 @@
-import Badge from "../ui/Badge";
-import { MapPin, ChevronDown } from "lucide-react";
+import { Search, Filter } from "lucide-react";
 
-export default function SiteRow({ site }) {
+export default function SiteFilters({ showInactive, setShowInactive }) {
   return (
-    <tr className="hover:bg-[hsl(220,15%,16%)] transition-colors border-b border-[hsl(220,15%,20%)]">
-      <td className="px-2 sm:px-3 py-2 sm:py-3 text-center sticky left-0 bg-[hsl(220,15%,14%)] hover:bg-[hsl(220,15%,16%)] z-[5]">
-        <input 
-          type="checkbox" 
-          className="rounded border-[hsl(220,15%,30%)] bg-[hsl(220,15%,18%)] text-orange-600 focus:ring-orange-500 focus:ring-offset-0 cursor-pointer" 
+    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
+      {/* Search */}
+      <div className="relative flex-1 w-full sm:w-auto">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+        <input
+          type="text"
+          placeholder="Search sites..."
+          className="w-full pl-9 pr-3 py-2 bg-[hsl(220,15%,14%)] border border-[hsl(220,15%,22%)] rounded-md text-sm text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500 transition-colors"
         />
-      </td>
-      <td className="px-2 sm:px-3 py-2 sm:py-3 text-orange-500 hover:text-orange-400 hover:underline cursor-pointer whitespace-nowrap transition-colors">
-        {site.siteLocationName}
-      </td>
-      <td className="px-2 sm:px-3 py-2 sm:py-3 text-gray-300 whitespace-nowrap">{site.shortName}</td>
-      <td className="px-2 sm:px-3 py-2 sm:py-3 text-gray-300 whitespace-nowrap">{site.client}</td>
-      <td className="px-2 sm:px-3 py-2 sm:py-3 text-gray-300 whitespace-nowrap">{site.state}</td>
-      <td className="px-2 sm:px-3 py-2 sm:py-3">
-        <Badge status={site.status} />
-      </td>
-      <td className="px-2 sm:px-3 py-2 sm:py-3 text-center text-gray-300">{site.expiryIn30Days}</td>
-      <td className="px-2 sm:px-3 py-2 sm:py-3 text-center">
-        <button className="text-orange-500 hover:text-orange-400 transition-colors" title="View on Map">
-          <MapPin className="w-4 h-4 sm:w-5 sm:h-5 mx-auto" />
-        </button>
-      </td>
-      <td className="px-2 sm:px-3 py-2 sm:py-3 text-right sticky right-0 bg-[hsl(220,15%,14%)] hover:bg-[hsl(220,15%,16%)] z-[5] relative">
-        <button className="px-2 sm:px-3 py-1.5 bg-[hsl(220,15%,18%)] border border-[hsl(220,15%,30%)] rounded text-xs sm:text-sm text-gray-300 hover:bg-[hsl(220,15%,22%)] transition-colors flex items-center gap-1">
-          Actions
-          <ChevronDown className="w-3 h-3" />
-        </button>
-      </td>
-    </tr>
+      </div>
+
+      {/* Show Inactive Toggle */}
+      <label className="flex items-center gap-2 cursor-pointer select-none whitespace-nowrap">
+        <input
+          type="checkbox"
+          checked={showInactive}
+          onChange={(e) => setShowInactive(e.target.checked)}
+          className="rounded border-[hsl(220,15%,30%)] bg-[hsl(220,15%,18%)] text-orange-600 focus:ring-orange-500 focus:ring-offset-0 cursor-pointer"
+        />
+        <span className="text-sm text-gray-300">Show Inactive</span>
+      </label>
+    </div>
   );
 }
